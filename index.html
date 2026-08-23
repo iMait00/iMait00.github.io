@@ -2033,6 +2033,128 @@
       cursor: pointer !important
     }
 
+    /* ─── مشغّل مخصّص أدنى (يخفي واجهة يوتيوب ويُبقي فقط التشغيل/الإيقاف وشريط التقدّم) ─── */
+    .vplayer-controls {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none
+    }
+
+    .vplayer-tap {
+      position: absolute;
+      inset: 0;
+      pointer-events: auto;
+      cursor: pointer
+    }
+
+    .vplayer-center {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 66px;
+      height: 66px;
+      border-radius: 50%;
+      background: rgba(26, 18, 11, .55);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity .25s var(--ease-out)
+    }
+
+    .vplayer-center.show {
+      opacity: 1
+    }
+
+    .vplayer-center svg {
+      width: 30px;
+      height: 30px;
+      fill: var(--cream)
+    }
+
+    .vplayer-bar {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      direction: ltr;
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      padding: .7rem .85rem calc(.6rem + env(safe-area-inset-bottom, 0px));
+      background: linear-gradient(to top, rgba(0, 0, 0, .65), rgba(0, 0, 0, .15) 70%, transparent);
+      pointer-events: auto
+    }
+
+    .vplayer-btn {
+      background: none;
+      border: 0;
+      padding: 0;
+      margin: 0;
+      flex-shrink: 0;
+      color: var(--cream);
+      display: flex;
+      cursor: pointer !important
+    }
+
+    .vplayer-btn svg {
+      width: 24px;
+      height: 24px;
+      fill: currentColor
+    }
+
+    .vplayer-time {
+      color: var(--cream);
+      font-size: .72rem;
+      font-family: var(--font-mono, monospace);
+      font-variant-numeric: tabular-nums;
+      flex-shrink: 0;
+      opacity: .9
+    }
+
+    .vplayer-progress {
+      position: relative;
+      flex: 1;
+      height: 16px;
+      display: flex;
+      align-items: center;
+      cursor: pointer !important
+    }
+
+    .vplayer-track {
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 4px;
+      border-radius: 2px;
+      background: rgba(255, 255, 255, .3)
+    }
+
+    .vplayer-fill {
+      position: absolute;
+      left: 0;
+      width: 0;
+      height: 4px;
+      border-radius: 2px;
+      background: var(--flame)
+    }
+
+    .vplayer-knob {
+      position: absolute;
+      left: 0;
+      top: 50%;
+      width: 12px;
+      height: 12px;
+      margin-top: -6px;
+      border-radius: 50%;
+      background: var(--flame);
+      transform: translateX(-50%);
+      box-shadow: 0 0 0 3px rgba(255, 90, 31, .25)
+    }
+
     @media(max-width:600px) {
       .video-modal {
         padding: 1rem
@@ -2813,26 +2935,182 @@
       const closeBtn = document.getElementById('videoModalClose');
       if (!modal) return;
 
+      let player = null;    // نسخة YT.Player
+      let poll = null;      // مؤقّت تحديث شريط التقدّم
+      let apiReady = false;
+      let pending = null;   // {id, vertical} بانتظار جهوزية الواجهة البرمجية
+      let dragging = false;
+      let els = null;       // عناصر التحكّم المخصّصة
+
+      // ── تحميل YouTube IFrame Player API مرة واحدة ──
+      function loadAPI() {
+        if (window.YT && window.YT.Player) { apiReady = true; return; }
+        if (document.getElementById('yt-iframe-api')) return;
+        const s = document.createElement('script');
+        s.id = 'yt-iframe-api';
+        s.src = 'https://www.youtube.com/iframe_api';
+        document.head.appendChild(s);
+      }
+      window.onYouTubeIframeAPIReady = function () {
+        apiReady = true;
+        if (pending) { const p = pending; pending = null; startPlayer(p.id, p.vertical); }
+      };
+
+      function fmt(t) {
+        t = Math.max(0, Math.floor(t || 0));
+        const m = Math.floor(t / 60), s = t % 60;
+        return m + ':' + (s < 10 ? '0' : '') + s;
+      }
+
+      const ICON_PLAY = '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
+      const ICON_PAUSE = '<svg viewBox="0 0 24 24"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>';
+
+      function controlsHTML() {
+        return '<div class="vplayer-controls">' +
+          '<div class="vplayer-tap" data-tap></div>' +
+          '<div class="vplayer-center" data-center>' + ICON_PLAY + '</div>' +
+          '<div class="vplayer-bar">' +
+          '<button class="vplayer-btn" data-toggle aria-label="تشغيل / إيقاف">' + ICON_PLAY + '</button>' +
+          '<span class="vplayer-time" data-cur>0:00</span>' +
+          '<div class="vplayer-progress" data-progress>' +
+          '<div class="vplayer-track"></div>' +
+          '<div class="vplayer-fill" data-fill></div>' +
+          '<div class="vplayer-knob" data-knob></div>' +
+          '</div>' +
+          '<span class="vplayer-time" data-dur>0:00</span>' +
+          '</div>' +
+          '</div>';
+      }
+
+      // محاولة تثبيت الجودة العالية (أفضل جهد — يوتيوب قد يتجاهلها ويعدّلها تلقائياً)
+      function tryQuality() {
+        try {
+          if (player.setPlaybackQualityRange) player.setPlaybackQualityRange('hd1080', 'highres');
+          if (player.setPlaybackQuality) player.setPlaybackQuality('hd1080');
+        } catch (e) { }
+      }
+
+      function isPlaying() {
+        return player && player.getPlayerState && player.getPlayerState() === 1;
+      }
+
+      function setPlayIcon(playing) {
+        if (!els) return;
+        els.toggle.innerHTML = playing ? ICON_PAUSE : ICON_PLAY;
+        els.center.innerHTML = playing ? ICON_PAUSE : ICON_PLAY;
+      }
+
+      function flashCenter() {
+        if (!els) return;
+        els.center.classList.add('show');
+        clearTimeout(els.center._t);
+        els.center._t = setTimeout(() => els.center.classList.remove('show'), 550);
+      }
+
+      function toggle() {
+        if (!player || !player.getPlayerState) return;
+        if (isPlaying()) { player.pauseVideo(); } else { player.playVideo(); }
+        flashCenter();
+      }
+
+      function updateProgress() {
+        if (!player || !player.getDuration || dragging || !els) return;
+        const d = player.getDuration() || 0;
+        const c = player.getCurrentTime() || 0;
+        const r = d ? (c / d) : 0;
+        els.fill.style.width = (r * 100) + '%';
+        els.knob.style.left = (r * 100) + '%';
+        els.cur.textContent = fmt(c);
+        els.dur.textContent = fmt(d);
+      }
+
+      function seekRatio(e) {
+        const rect = els.progress.getBoundingClientRect();
+        const cx = (e.touches && e.touches[0]) ? e.touches[0].clientX
+          : (e.changedTouches && e.changedTouches[0]) ? e.changedTouches[0].clientX : e.clientX;
+        let r = rect.width ? ((cx - rect.left) / rect.width) : 0;
+        r = Math.min(1, Math.max(0, r));
+        els.fill.style.width = (r * 100) + '%';
+        els.knob.style.left = (r * 100) + '%';
+        els.cur.textContent = fmt(r * (player.getDuration() || 0));
+        return r;
+      }
+
+      function wireControls() {
+        els = {
+          tap: frame.querySelector('[data-tap]'),
+          center: frame.querySelector('[data-center]'),
+          toggle: frame.querySelector('[data-toggle]'),
+          cur: frame.querySelector('[data-cur]'),
+          dur: frame.querySelector('[data-dur]'),
+          progress: frame.querySelector('[data-progress]'),
+          fill: frame.querySelector('[data-fill]'),
+          knob: frame.querySelector('[data-knob]')
+        };
+        els.tap.addEventListener('click', toggle);
+        els.toggle.addEventListener('click', toggle);
+
+        const down = (e) => { dragging = true; seekRatio(e); e.preventDefault(); };
+        const move = (e) => { if (dragging) seekRatio(e); };
+        const up = (e) => {
+          if (!dragging) return;
+          const r = seekRatio(e);
+          dragging = false;
+          if (player.seekTo) player.seekTo(r * (player.getDuration() || 0), true);
+        };
+        els.progress.addEventListener('mousedown', down);
+        document.addEventListener('mousemove', move);
+        document.addEventListener('mouseup', up);
+        els.progress.addEventListener('touchstart', down, { passive: false });
+        els.progress.addEventListener('touchmove', move, { passive: false });
+        els.progress.addEventListener('touchend', up);
+      }
+
+      function startPlayer(id, vertical) {
+        frame.innerHTML = '<div id="ytmount"></div>' + controlsHTML();
+        wireControls();
+        // controls:0 يخفي واجهة يوتيوب كاملة؛ نبني تحكّمنا الخاص فوقها.
+        // fs:0 يزيل ملء الشاشة، iv_load_policy:3 يخفي التعليقات، disablekb:1 يعطّل اختصارات يوتيوب.
+        const vars = {
+          controls: 0, rel: 0, modestbranding: 1, playsinline: 1,
+          autoplay: 1, fs: 0, iv_load_policy: 3, disablekb: 1
+        };
+        if (location.protocol === 'http:' || location.protocol === 'https:') vars.origin = location.origin;
+        player = new YT.Player('ytmount', {
+          width: '100%', height: '100%', videoId: id, host: 'https://www.youtube-nocookie.com',
+          playerVars: vars,
+          events: {
+            onReady: (e) => {
+              tryQuality();
+              e.target.playVideo(); // يعمل مباشرة بعد نقر المستخدم على المقطع؛ وإلا يبقى زر التشغيل ظاهراً للنقر
+              clearInterval(poll);
+              poll = setInterval(updateProgress, 250);
+            },
+            onStateChange: (e) => {
+              if (e.data === 1) { setPlayIcon(true); tryQuality(); }   // playing
+              else if (e.data === 2 || e.data === 0) { setPlayIcon(false); } // paused / ended
+            }
+          }
+        });
+      }
+
       function openVideo(id, title, vertical) {
-        // youtube-nocookie + rel=0 + modestbranding: أنظف مشغّل، بدون إعلانات تتبّع ومع تقليل المقترحات
-        let src = 'https://www.youtube-nocookie.com/embed/' + id +
-          '?rel=0&modestbranding=1&playsinline=1&autoplay=1';
-        // تمرير origin عند تشغيل الموقع على http/https (بعد الاستضافة) لضمان توافق التضمين
-        if (location.protocol === 'http:' || location.protocol === 'https:') {
-          src += '&origin=' + encodeURIComponent(location.origin);
-        }
-        frame.innerHTML = '<iframe src="' + src + '" title="' + (title || '') +
-          '" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>';
         titleEl.textContent = title || '';
         modal.classList.toggle('vertical', !!vertical);
         modal.classList.add('active');
         document.body.classList.add('modal-open'); // يخفي المؤشر المخصّص العالق
         document.body.style.overflow = 'hidden';
+        if (apiReady) { startPlayer(id, vertical); }
+        else { pending = { id: id, vertical: vertical }; loadAPI(); }
       }
 
       function closeVideo() {
         modal.classList.remove('active');
         document.body.classList.remove('modal-open');
+        clearInterval(poll); poll = null;
+        pending = null;
+        try { if (player && player.destroy) player.destroy(); } catch (e) { }
+        player = null; els = null;
         frame.innerHTML = ''; // إيقاف التشغيل فوراً
         document.body.style.overflow = '';
       }
