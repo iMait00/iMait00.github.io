@@ -4,6 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 124.59 124.6'%3E%3Cpolygon fill='%23FF5A1F' points='96.42 76.13 116.49 96.2 76.64 96.2 76.64 124.6 48.46 96.42 28.39 116.49 28.39 76.64 0 76.64 28.18 48.47 8.1 28.39 47.95 28.39 47.95 0 76.13 28.18 96.2 8.1 96.2 47.95 124.59 47.95 96.42 76.13'/%3E%3C/svg%3E">
   <title>Mait00</title>
   <meta name="description"
     content="محمد (Mait00) — فنان موشن جرافيك ومونتير فيديو في الرياض. أحول الأفكار الخام إلى قصص بصرية تُحسّ قبل أن تُرى.">
@@ -120,7 +122,9 @@
       scroll-behavior: auto;
       font-size: 18px;
       scrollbar-width: thin;
-      scrollbar-color: var(--flame) var(--cream)
+      scrollbar-color: var(--flame) var(--cream);
+      overflow-x: hidden;
+      max-width: 100%
     }
 
     ::-webkit-scrollbar {
@@ -230,7 +234,7 @@
 
     .grain {
       position: fixed;
-      inset: -50%;
+      inset: 0;
       pointer-events: none;
       z-index: 9990;
       opacity: .05;
@@ -691,7 +695,6 @@
       border: 1px solid var(--border-dark);
       background: rgba(255, 90, 31, .06);
       padding: 2.2rem 4rem;
-      margin-bottom: 3rem;
       opacity: 1;
       width: fit-content;
       justify-content: center
@@ -830,7 +833,11 @@
 
     @media(max-width:900px) {
       .hero {
-        grid-template-columns: 1fr
+        grid-template-columns: 1fr;
+        background-image: linear-gradient(to top, rgba(26, 18, 11, .4) 0%, rgba(26, 18, 11, .9) 52%, rgba(26, 18, 11, .98) 100%), url('images/fire-bg.webp');
+        background-size: cover;
+        background-position: left bottom;
+        background-repeat: no-repeat
       }
 
       .hero-bg-side {
@@ -838,7 +845,28 @@
       }
 
       .hero-text-side {
-        padding: 8rem 2rem 4rem
+        padding: 7rem 2rem 5rem;
+        min-width: 0;
+        gap: 0
+      }
+
+      .hero h1 {
+        white-space: normal;
+        line-height: 1.25;
+        margin-bottom: 1.75rem
+      }
+
+      .hero-tag {
+        margin-bottom: 1.25rem
+      }
+
+      .hero-sub {
+        margin-bottom: 2.25rem
+      }
+
+      /* على الجوال: إخفاء مؤشر "اسحب للأسفل" لتفادي تداخله مع الأزرار */
+      .hero-scroll {
+        display: none
       }
     }
 
@@ -910,6 +938,10 @@
 
     .about-content .section-title .flame {
       color: var(--flame)
+    }
+
+    .about-content .section-title {
+      margin-bottom: 0
     }
 
     .about-text {
@@ -1592,24 +1624,6 @@
     }
 
     /* ─── ARABIC DECORATIVE ELEMENTS ─── */
-    .section-light .section-title::after {
-      content: '';
-      display: block;
-      width: 60px;
-      height: 2px;
-      background: var(--flame);
-      margin-top: 1rem
-    }
-
-    .section-dark .section-title::after {
-      content: '';
-      display: block;
-      width: 60px;
-      height: 2px;
-      background: var(--flame);
-      margin-top: 1rem
-    }
-
     /* ─── ENGLISH CONTENT (hidden by default) ─── */
     [data-en] {
       display: none
@@ -1740,11 +1754,25 @@
       }
 
       .hero-stats-group {
-        flex-wrap: wrap;
-        gap: 2rem;
+        flex-wrap: nowrap;
+        gap: .5rem;
         width: 100%;
-        justify-content: center;
-        padding: 2rem;
+        justify-content: space-around;
+        padding: 1.5rem .75rem;
+      }
+
+      .hero-stat {
+        flex: 1
+      }
+
+      .hero-stat-label {
+        font-size: .8rem;
+        text-align: center
+      }
+
+      /* على اللمس: زر التشغيل يظهر دائماً ليتضح أنها فيديوهات */
+      .bento-play-btn {
+        transform: translate(-50%, -50%) scale(1)
       }
 
       .bento-grid {
@@ -1782,6 +1810,10 @@
       .process-timeline {
         padding-right: 2rem
       }
+
+      .process-step::before {
+        right: -2.1rem
+      }
     }
 
     @media(max-width:480px) {
@@ -1790,11 +1822,16 @@
       }
 
       .hero-stats-group {
-        gap: 1rem
+        gap: .35rem;
+        padding: 1.25rem .5rem
       }
 
       .hero-stat-num {
-        font-size: 1.3rem
+        font-size: 1.25rem
+      }
+
+      .hero-stat-label {
+        font-size: .72rem
       }
     }
 
@@ -1947,7 +1984,7 @@
     .video-modal-close {
       position: absolute;
       top: -3rem;
-      left: 0;
+      right: 0;
       width: 40px;
       height: 40px;
       border: 1px solid var(--border-dark);
@@ -1966,6 +2003,20 @@
     .video-modal-close svg {
       width: 18px;
       height: 18px
+    }
+
+    /* أثناء تشغيل المقطع: أخفِ المؤشر المخصّص (يعلق عند حافة المشغّل) وأظهر مؤشراً عادياً */
+    body.modal-open .custom-cursor {
+      display: none !important
+    }
+
+    .video-modal,
+    .video-modal * {
+      cursor: auto !important
+    }
+
+    .video-modal-close {
+      cursor: pointer !important
     }
 
     @media(max-width:600px) {
@@ -2382,8 +2433,8 @@
         </div>
       </div>
 
-      <p class="works-note"><span data-ar>بعض الأعمال أُنجزت تحت مظلّة مدوّنة ستوديو</span><span data-en>Some works were
-          produced under Mdwna Studio</span></p>
+      <p class="works-note"><span data-ar>جملة من الأعمال أُنجزت تحت مظلّة مدوّنة ستوديو</span><span data-en>A number of
+          works produced under Mdwna Studio</span></p>
     </div>
   </section>
 
@@ -2761,11 +2812,13 @@
         titleEl.textContent = title || '';
         modal.classList.toggle('vertical', !!vertical);
         modal.classList.add('active');
+        document.body.classList.add('modal-open'); // يخفي المؤشر المخصّص العالق
         document.body.style.overflow = 'hidden';
       }
 
       function closeVideo() {
         modal.classList.remove('active');
+        document.body.classList.remove('modal-open');
         frame.innerHTML = ''; // إيقاف التشغيل فوراً
         document.body.style.overflow = '';
       }
