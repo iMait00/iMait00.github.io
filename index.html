@@ -1356,6 +1356,31 @@
       padding-top: 0
     }
 
+    /* منع تجاوز الحقول لحدود الحاوية (خصوصاً على الجوال) */
+    .contact-form input,
+    .contact-form textarea,
+    .contact-form select {
+      width: 100%;
+      min-width: 0;
+      max-width: 100%
+    }
+
+    .contact-form .form-group {
+      min-width: 0
+    }
+
+    .form-two-col {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 1.2rem
+    }
+
+    @media(max-width:600px) {
+      .form-two-col {
+        grid-template-columns: 1fr
+      }
+    }
+
     .whatsapp-btn {
       display: inline-flex;
       align-items: center;
@@ -2412,7 +2437,7 @@
             <input type="hidden" name="from_name" value="موقع Mait00">
             <!-- honeypot لمنع السبام (يجب أن يبقى مخفياً وفارغاً) -->
             <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off">
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.2rem">
+            <div class="form-two-col">
               <div class="form-group" style="display:flex;flex-direction:column;gap:.4rem">
                 <label
                   style="font-family:var(--font-mono);font-size:var(--text-xs);font-weight:600;color:var(--cognac);letter-spacing:1px;direction:rtl"><span
