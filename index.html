@@ -1681,6 +1681,12 @@
         height: 60vh
       }
 
+      /* على الجوال الصورة فوق المحتوى: التدرّج يصير عمودياً — الصورة واضحة في الأعلى وتتلاشى بلطف عند الحافة السفلى فقط */
+      .about-visual::after,
+      .lang-en .about-visual::after {
+        background: linear-gradient(to bottom, transparent 0%, transparent 62%, rgba(241, 230, 210, .35) 82%, rgba(241, 230, 210, .78) 93%, var(--cream) 100%)
+      }
+
       .about-content {
         width: 100vw;
         padding: 3rem 2rem
