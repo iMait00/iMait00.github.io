@@ -2178,7 +2178,7 @@
     .vplayer-vol-pop {
       position: absolute;
       left: 50%;
-      bottom: calc(100% + 10px);
+      bottom: calc(100% + 4px);
       transform: translateX(-50%);
       display: flex;
       justify-content: center;
@@ -2188,23 +2188,24 @@
       background: rgba(26, 18, 11, .95);
       opacity: 0;
       pointer-events: none;
-      transition: opacity .2s var(--ease-out)
+      transition: opacity .18s var(--ease-out)
     }
 
-    /* يظهر بالنقر فقط (وليس hover) لتفادي اختفائه عند تحريك المؤشر نحو المنزلق */
+    /* يظهر بالمرور (hover) أو بالنقر؛ والجسر أدناه يمنع اختفاءه عند تحريك المؤشر نحو المنزلق */
+    .vplayer-vol:hover .vplayer-vol-pop,
     .vplayer-vol.open .vplayer-vol-pop {
       opacity: 1;
       pointer-events: auto
     }
 
-    /* جسر شفّاف يملأ الفجوة بين الزر والمنزلق حتى لا ينقطع المؤشر */
+    /* جسر يملأ الفجوة بين الزر والمنزلق حتى لا ينقطع تتبّع المؤشر (يمتدّ تحت المنبثق ليلامس الزر) */
     .vplayer-vol-pop::after {
       content: '';
       position: absolute;
       top: 100%;
-      left: 0;
-      right: 0;
-      height: 12px
+      left: -6px;
+      right: -6px;
+      height: 10px
     }
 
     .vplayer-vol-track {
