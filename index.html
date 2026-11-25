@@ -2666,9 +2666,9 @@
     }
 
     .tl-node {
-      width: 26px;
-      height: 26px;
-      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      border-radius: 0;
       background: var(--espresso);
       border: 2px solid rgba(241, 230, 210, .5);
       transition: background-color .4s, border-color .4s, box-shadow .5s
@@ -2782,6 +2782,24 @@
       .custom-cursor.is-play .cursor-play {
         display: block
       }
+    }
+    /* زر التشغيل يظهر على شاشات اللمس فقط؛ مع الماوس يتحوّل المؤشر نفسه إلى زر تشغيل */
+    @media (hover: hover) and (pointer: fine) {
+      .reel-play {
+        display: none
+      }
+    }
+
+    .reel-play {
+      border-radius: 0
+    }
+
+    /* المؤشر مربع ليتماشى مع زوايا الموقع الحادة */
+    .custom-cursor,
+    .custom-cursor.hover,
+    .custom-cursor.is-nav,
+    .custom-cursor.is-play {
+      border-radius: 0
     }
   </style>
 </head>
@@ -2900,6 +2918,7 @@
               <img class="reel-mark" src="images/works/jazeel-stroke.webp" alt="" loading="lazy" draggable="false">
               <img class="reel-logo" src="images/works/jazeel-logo.webp" alt="شوكولاوة جزيل" loading="lazy" draggable="false">
             </div>
+            <span class="reel-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l12-7.5z" /></svg></span>
             <template>
               <div class="reel-info-top">
                 <h4 class="reel-title"><span data-ar>شوكولاوة جزيل</span><span data-en>Jazeel Chocolawa</span></h4>
@@ -2915,6 +2934,7 @@
               <img class="reel-mark" src="images/works/satr-stroke.webp" alt="" loading="lazy" draggable="false">
               <img class="reel-logo" src="images/works/satr-logo.svg" alt="استعراض هوية سطر" loading="lazy" draggable="false">
             </div>
+            <span class="reel-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l12-7.5z" /></svg></span>
             <template>
               <div class="reel-info-top">
                 <h4 class="reel-title"><span data-ar>استعراض هوية سطر</span><span data-en>Satr Identity Reveal</span></h4>
@@ -2930,6 +2950,7 @@
               <img class="reel-mark" src="images/works/lunanera-stroke.webp" alt="" loading="lazy" draggable="false">
               <img class="reel-logo" src="images/works/lunanera-logo.webp" alt="خدمات لونانيرا" loading="lazy" draggable="false">
             </div>
+            <span class="reel-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l12-7.5z" /></svg></span>
             <template>
               <div class="reel-info-top">
                 <h4 class="reel-title"><span data-ar>خدمات لونانيرا</span><span data-en>Lunanera Services</span></h4>
@@ -2945,6 +2966,7 @@
               <img class="reel-mark" src="images/works/laan-stroke.webp" alt="" loading="lazy" draggable="false">
               <img class="reel-logo" src="images/works/laan-logo.webp" alt="مع الله: خطورة اللعن" loading="lazy" draggable="false">
             </div>
+            <span class="reel-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l12-7.5z" /></svg></span>
             <template>
               <div class="reel-info-top">
                 <h4 class="reel-title"><span data-ar>مع الله: خطورة اللعن</span><span data-en>Ma'a Allah: The Gravity of Cursing</span></h4>
@@ -2960,6 +2982,7 @@
               <img class="reel-mark" src="images/works/urwa-stroke.webp" alt="" loading="lazy" draggable="false">
               <img class="reel-logo" src="images/works/urwa-logo.svg" alt="العروة الوثقى: قانون الجذب" loading="lazy" draggable="false">
             </div>
+            <span class="reel-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l12-7.5z" /></svg></span>
             <template>
               <div class="reel-info-top">
                 <h4 class="reel-title"><span data-ar>العروة الوثقى: قانون الجذب</span><span data-en>Al-Urwa Al-Wuthqa: The Law of Attraction</span></h4>
@@ -2985,6 +3008,7 @@
               <img class="reel-mark" src="images/works/yaghulam-stroke.webp" alt="" loading="lazy" draggable="false">
               <img class="reel-logo" src="images/works/yaghulam-logo.svg" alt="بودكاست يا غلام" loading="lazy" draggable="false">
             </div>
+            <span class="reel-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l12-7.5z" /></svg></span>
             <template>
               <div class="reel-info-top">
                 <h4 class="reel-title"><span data-ar>بودكاست يا غلام</span><span data-en>Ya Ghulam Podcast</span></h4>
@@ -3000,6 +3024,7 @@
               <img class="reel-mark" src="images/works/shumaisi-stroke.webp" alt="" loading="lazy" draggable="false">
               <img class="reel-logo" src="images/works/shumaisi-logo.webp" alt="رايح جاي: حي الشميسي" loading="lazy" draggable="false">
             </div>
+            <span class="reel-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l12-7.5z" /></svg></span>
             <template>
               <div class="reel-info-top">
                 <h4 class="reel-title"><span data-ar>رايح جاي: حي الشميسي</span><span data-en>Rayeh Jay: Al-Shumaisi</span></h4>
@@ -3015,6 +3040,7 @@
               <img class="reel-mark" src="images/works/herasathon-stroke.webp" alt="" loading="lazy" draggable="false">
               <img class="reel-logo" src="images/works/herasathon-logo.webp" alt="حراساثون" loading="lazy" draggable="false">
             </div>
+            <span class="reel-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l12-7.5z" /></svg></span>
             <template>
               <div class="reel-info-top">
                 <h4 class="reel-title"><span data-ar>حراساثون</span><span data-en>Herasathon</span></h4>
@@ -3030,6 +3056,7 @@
               <img class="reel-mark" src="images/works/etimad-stroke.webp" alt="" loading="lazy" draggable="false">
               <img class="reel-logo" src="images/works/etimad-logo.svg" alt="مدرب نادي الاعتماد" loading="lazy" draggable="false">
             </div>
+            <span class="reel-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l12-7.5z" /></svg></span>
             <template>
               <div class="reel-info-top">
                 <h4 class="reel-title"><span data-ar>مدرب نادي الاعتماد</span><span data-en>The Al-EETEMAD Coach</span></h4>
@@ -3045,6 +3072,7 @@
               <img class="reel-mark" src="images/works/laan-stroke.webp" alt="" loading="lazy" draggable="false">
               <img class="reel-logo" src="images/works/laan-logo.webp" alt="مع الله: البركة" loading="lazy" draggable="false">
             </div>
+            <span class="reel-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l12-7.5z" /></svg></span>
             <template>
               <div class="reel-info-top">
                 <h4 class="reel-title"><span data-ar>مع الله: البركة</span><span data-en>Ma'a Allah: Barakah</span></h4>
@@ -3141,7 +3169,7 @@
     <div class="section-inner">
       <h2 class="section-title steps-title"><span data-ar>خطة العمل</span><span data-en>The Work Plan</span></h2>
       <div class="tl">
-        <svg class="tl-svg" aria-hidden="true"><path class="tl-guide" /><path class="tl-draw" /><circle class="tl-head" r="6" /></svg>
+        <svg class="tl-svg" aria-hidden="true"><path class="tl-guide" /><path class="tl-draw" /><rect class="tl-head" width="11" height="11" /></svg>
         <ol class="tl-list">
           <li class="tl-step">
             <span class="tl-node" aria-hidden="true"></span>
@@ -4020,7 +4048,8 @@
         const W = tr.width, H = tr.height;
         tlSvg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
         const nodes = steps.map(s => { const b = s.querySelector('.tl-node').getBoundingClientRect(); return [b.left - tr.left + b.width / 2, b.top - tr.top + b.height / 2]; });
-        const wide = W > 700;
+        // المسار المتعرّج بحلقته فقط حين تتناوب المحطات يمينًا ويسارًا (لا حين تكون في عمود واحد)
+        const wide = nodes.length > 1 && Math.abs(nodes[1][0] - nodes[0][0]) > 120;
         // منحنى S ناعم بين كل محطتين، مع حلقة واحدة فقط بين الثانية والثالثة
         const pts = [nodes[0]];
         nodes.forEach((n, i) => {
@@ -4064,7 +4093,7 @@
         for (let i = 0; i < samples.length; i++) { if (samples[i][1] > mark) break; L = samples[i][0]; }
         draw.style.strokeDashoffset = (len - L).toFixed(1);
         const p = draw.getPointAtLength(L);
-        head.setAttribute('cx', p.x.toFixed(1)); head.setAttribute('cy', p.y.toFixed(1));
+        head.setAttribute('x', (p.x - 5.5).toFixed(1)); head.setAttribute('y', (p.y - 5.5).toFixed(1));
         head.style.opacity = L > 2 && L < len - 2 ? 1 : 0;
         let last = -1;
         steps.forEach((st, i) => {
