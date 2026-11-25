@@ -2581,6 +2581,11 @@
       opacity: .3
     }
 
+    /* صورة المحادثة طولية: تملأ عرض الشاشة ويُقص أعلاها وأسفلها، مع إبقاء الرسائل في المنتصف */
+    .tl-bg-chat {
+      object-position: center 45%
+    }
+
     /* البريف أخفت قليلًا */
     .tl-bg-brief.is-on {
       opacity: .22
@@ -3130,7 +3135,7 @@
         <img class="tl-bg tl-bg-brief" src="images/process/brief.webp" alt="" loading="lazy" draggable="false">
         <img class="tl-bg" src="images/process/storyboard.webp" alt="" loading="lazy" draggable="false">
         <img class="tl-bg" src="images/process/timeline.webp" alt="" loading="lazy" draggable="false">
-        <img class="tl-bg" src="images/process/delivery.webp" alt="" loading="lazy" draggable="false">
+        <img class="tl-bg tl-bg-chat" src="images/process/delivery.webp" alt="" loading="lazy" draggable="false">
       </div>
     </div>
     <div class="section-inner">
