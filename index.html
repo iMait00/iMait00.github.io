@@ -2586,6 +2586,13 @@
       object-position: center 45%
     }
 
+    /* على الجوال: تُدفع صورة البريف لليسار ليظهر جانبها الأيمن حيث يبدأ النص العربي */
+    @media(max-width:900px) {
+      .tl-bg-brief {
+        object-position: 78% top
+      }
+    }
+
     /* البريف أخفت قليلًا */
     .tl-bg-brief.is-on {
       opacity: .22
@@ -4101,7 +4108,7 @@
           const reached = b.top + b.height / 2 - tr.top <= mark;
           st.classList.toggle('is-reached', reached);
           // صورة المحطة الأخيرة تظهر أبكر قليلًا، لكن بعد الوصول إلى المحطة التي قبلها
-          if (reached || (i === steps.length - 1 && last === i - 1 && b.top + b.height / 2 <= window.innerHeight * 0.76)) last = i;
+          if (reached || (i === steps.length - 1 && last === i - 1 && b.top + b.height / 2 <= window.innerHeight * 0.68)) last = i;
         });
         // خلفية المحطة الأخيرة التي وصلها الخط (وتختفي بعد مغادرة القسم)
         const sr = tl.closest('section').getBoundingClientRect();
