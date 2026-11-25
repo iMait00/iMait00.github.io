@@ -16,15 +16,15 @@
   <meta property="og:title" content="محمد رجب | مونتير وموشن ديزاينر">
   <meta property="og:description"
     content="محمد رجب — مونتير وموشن ديزاينر في الرياض. أحوّل الأفكار الخام إلى قصص بصرية تُحسّ قبل أن تُرى.">
-  <meta property="og:url" content="https://imait00.github.io/">
-  <meta property="og:image" content="https://imait00.github.io/images/og-cover.png">
+  <meta property="og:url" content="https://mohragab.com/">
+  <meta property="og:image" content="https://mohragab.com/images/og-cover.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ar_AR">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="محمد رجب | مونتير وموشن ديزاينر">
   <meta name="twitter:description" content="محمد رجب — مونتير وموشن ديزاينر في الرياض.">
-  <meta name="twitter:image" content="https://imait00.github.io/images/og-cover.png">
+  <meta name="twitter:image" content="https://mohragab.com/images/og-cover.png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1305,6 +1305,7 @@
       opacity: 0;
       visibility: hidden;
       pointer-events: none;
+      -webkit-tap-highlight-color: transparent;
       transition: opacity .5s, visibility .5s
     }
 
@@ -1314,7 +1315,9 @@
 
     #work.is-watching .watch-dim {
       opacity: 1;
-      visibility: visible
+      visibility: visible;
+      pointer-events: auto;
+      cursor: pointer
     }
 
     #work.is-watching .reel.is-playing {
@@ -1388,12 +1391,7 @@
 
     .partners-track {
       display: flex;
-      width: max-content;
-      animation: partners-scroll 60s linear infinite
-    }
-
-    .partners-marquee:hover .partners-track {
-      animation-play-state: paused
+      width: max-content
     }
 
     .partners-set {
@@ -1437,12 +1435,12 @@
       }
 
       .partner {
-        height: 90px;
-        padding: 0 1.6rem
+        height: 60px;
+        padding: 0 1.1rem
       }
 
       .partner img {
-        width: calc(var(--w) * .7px)
+        width: calc(var(--w) * .5px)
       }
     }
 
@@ -1749,10 +1747,6 @@
     /* ══════════════════════════════════════
    SERVICES — index of services, each backed by a real project
    ══════════════════════════════════════ */
-    .svc {
-      border-top: 1px solid var(--border-dark)
-    }
-
     .svc-row {
       display: grid;
       grid-template-columns: minmax(0, 1.2fr) minmax(0, 1.3fr) 9.5rem;
@@ -2385,6 +2379,405 @@
         padding-top: 0
       }
     }
+
+    /* السكرول الثابت (sticky) يتطلب ألا يكون body حاوية تمرير */
+    html,
+    body {
+      overflow-x: clip
+    }
+
+    /* ══════════════════════════════════════
+   NAV — بلا شريط: صناديق عائمة (الشعار · الروابط في الوسط · اللغة)
+   ══════════════════════════════════════ */
+    .nav,
+    .nav.scrolled {
+      padding: var(--s2) clamp(1rem, 2.4vw, 2rem);
+      background: none;
+      box-shadow: none;
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+      align-items: flex-start;
+      pointer-events: none
+    }
+
+    .nav>* {
+      pointer-events: auto
+    }
+
+    .nav-box {
+      background: rgba(26, 18, 11, .72);
+      -webkit-backdrop-filter: blur(14px);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(241, 230, 210, .12);
+      transition: border-color .3s, background-color .3s
+    }
+
+    .nav-logo,
+    .nav .lang-toggle,
+    .nav .hamburger {
+      width: 52px;
+      height: 52px;
+      border-radius: 0
+    }
+
+    .nav-logo svg {
+      height: 26px
+    }
+
+    .nav-logo svg .cls-1,
+    .nav.scrolled .nav-logo svg .cls-1 {
+      fill: var(--cream)
+    }
+
+    .nav-logo:hover svg .cls-1 {
+      fill: var(--flame)
+    }
+
+    .nav-links {
+      position: absolute;
+      top: var(--s2);
+      left: 50%;
+      transform: translateX(-50%);
+      gap: 0;
+      padding: 4px;
+      height: 52px;
+      align-items: stretch
+    }
+
+    .nav-links li {
+      display: flex
+    }
+
+    .nav-links a,
+    .nav.scrolled .nav-links a {
+      color: rgba(241, 230, 210, .78);
+      padding-inline: 1.1rem;
+      min-height: 0;
+      transition: color .3s, background-color .3s
+    }
+
+    .nav-links a::after {
+      display: none
+    }
+
+    .nav-links a:hover,
+    .nav.scrolled .nav-links a:hover {
+      color: var(--cream);
+      background: rgba(241, 230, 210, .08)
+    }
+
+    .nav-links a.is-current,
+    .nav.scrolled .nav-links a.is-current {
+      color: var(--espresso);
+      background: var(--flame)
+    }
+
+    .nav-end {
+      display: flex;
+      gap: 6px
+    }
+
+    .nav .lang-toggle,
+    .nav.scrolled .lang-toggle {
+      color: var(--cream);
+      border-color: rgba(241, 230, 210, .12)
+    }
+
+    .nav .lang-toggle:hover,
+    .nav-logo:hover {
+      border-color: var(--flame)
+    }
+
+    .nav .lang-toggle:hover {
+      color: var(--flame)
+    }
+
+    .nav .hamburger span,
+    .nav.scrolled .hamburger span {
+      background: var(--cream)
+    }
+
+    @media(max-width:768px) {
+      .nav .hamburger {
+        display: flex
+      }
+
+      .nav-logo,
+      .nav .lang-toggle,
+      .nav .hamburger {
+        width: 46px;
+        height: 46px
+      }
+    }
+
+    /* ══════════════════════════════════════
+   PARTNERS — سطران متعاكسان
+   ══════════════════════════════════════ */
+    .partners-marquee+.partners-marquee {
+      margin-top: var(--s2)
+    }
+
+    /* الشعار بلا صندوق: يتلوّن حسب القسم الذي تحته */
+    .nav-logo svg {
+      height: 34px
+    }
+
+    .nav.on-light .nav-logo svg .cls-1 {
+      fill: var(--espresso)
+    }
+
+    .nav .nav-logo:hover svg .cls-1 {
+      fill: var(--flame)
+    }
+
+    /* ══════════════════════════════════════
+   رمز واحد بجانب عنوان كل قسم (من أيقوناتك)
+   ══════════════════════════════════════ */
+    .section-title::before,
+    .partners-title::before {
+      content: '';
+      display: inline-block;
+      width: .95em;
+      height: .95em;
+      margin-inline-end: .35em;
+      vertical-align: -.12em;
+      background: var(--flame);
+      -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 960 1050'%3E%3Cpolygon points='429,0 641,176 612,463 400,287'/%3E%3Cpolygon points='908,218 862,490 599,609 645,337'/%3E%3Cpolygon points='959,743 701,838 467,670 725,574'/%3E%3Cpolygon points='530,1048 318,872 347,585 559,761'/%3E%3Cpolygon points='51,830 97,559 360,440 314,712'/%3E%3Cpolygon points='0,306 259,211 493,380 235,475'/%3E%3C/svg%3E") center / contain no-repeat;
+      mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 960 1050'%3E%3Cpolygon points='429,0 641,176 612,463 400,287'/%3E%3Cpolygon points='908,218 862,490 599,609 645,337'/%3E%3Cpolygon points='959,743 701,838 467,670 725,574'/%3E%3Cpolygon points='530,1048 318,872 347,585 559,761'/%3E%3Cpolygon points='51,830 97,559 360,440 314,712'/%3E%3Cpolygon points='0,306 259,211 493,380 235,475'/%3E%3C/svg%3E") center / contain no-repeat
+    }
+
+    /* ══════════════════════════════════════
+   PROCESS — مسار متعرّج من الأعلى إلى الأسفل
+   ══════════════════════════════════════ */
+    /* صور خلفية تتبدّل مع كل محطة، بتدرّج من الأسفل إلى الأعلى */
+    .tl-bgs {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none
+    }
+
+    .tl-bg-pin {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      height: 100svh;
+      overflow: hidden
+    }
+
+    .tl-bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      opacity: 0;
+      filter: sepia(.6) saturate(1.1) brightness(.8) blur(2.5px);
+      transition: opacity 1.2s ease
+    }
+
+    .tl-bg.is-on {
+      opacity: .3
+    }
+
+    /* البريف أخفت قليلًا */
+    .tl-bg-brief.is-on {
+      opacity: .22
+    }
+
+    .tl-bg-pin::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, var(--espresso) 0%, rgba(26, 18, 11, .85) 25%, rgba(26, 18, 11, .25) 65%, rgba(26, 18, 11, .55) 100%)
+    }
+
+    #process>.section-inner {
+      position: relative;
+      z-index: 1
+    }
+
+    #process .steps-title {
+      margin-bottom: var(--s5)
+    }
+
+    .tl {
+      position: relative;
+      max-width: 56rem;
+      margin-inline: auto;
+      padding-bottom: var(--s4)
+    }
+
+    .tl-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+      pointer-events: none
+    }
+
+    .tl-svg path {
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round
+    }
+
+    .tl-guide {
+      stroke: rgba(241, 230, 210, .22);
+      stroke-width: 1.5;
+      stroke-dasharray: 2 7
+    }
+
+    .tl-draw {
+      stroke: var(--flame);
+      stroke-width: 3;
+      filter: drop-shadow(0 0 6px rgba(255, 90, 31, .7))
+    }
+
+    .tl-head {
+      fill: var(--cream);
+      filter: drop-shadow(0 0 8px rgba(255, 90, 31, .9))
+    }
+
+    .tl-list {
+      position: relative;
+      list-style: none;
+      display: grid;
+      row-gap: 7rem
+    }
+
+    .tl-step {
+      width: min(100%, 26rem);
+      display: grid;
+      grid-template-columns: 26px minmax(0, 1fr);
+      column-gap: var(--s3);
+      align-items: center
+    }
+
+    .tl-step:nth-child(even) {
+      margin-inline-start: auto
+    }
+
+    .tl-node {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--espresso);
+      border: 2px solid rgba(241, 230, 210, .5);
+      transition: background-color .4s, border-color .4s, box-shadow .5s
+    }
+
+    .tl-step.is-reached .tl-node {
+      background: var(--flame);
+      border-color: var(--flame);
+      box-shadow: 0 0 0 10px rgba(255, 90, 31, .16)
+    }
+
+    .tl-text {
+      opacity: .28;
+      transition: opacity .7s
+    }
+
+    .tl-step.is-reached .tl-text {
+      opacity: 1
+    }
+
+    .tl-media[hidden] {
+      display: none
+    }
+
+    .tl-media {
+      position: relative;
+      aspect-ratio: 5 / 4;
+      container-type: size;
+      background: #2a1a0e
+    }
+
+    /* فلتر بنّي موحّد للصور */
+    .tl-media>* {
+      filter: sepia(.85) saturate(1.25) hue-rotate(-8deg) brightness(.82) contrast(1.06)
+    }
+
+    .tl-media::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: #7a4724;
+      mix-blend-mode: color;
+      opacity: .55;
+      pointer-events: none
+    }
+
+    #process .tl-text h3 {
+      font-family: var(--font-heading);
+      font-size: var(--text-2xl);
+      font-weight: 700;
+      color: var(--cream);
+      margin-bottom: calc(var(--s2) - .28em)
+    }
+
+    #process .tl-text p {
+      font-size: var(--text-lg);
+      color: var(--amber);
+      line-height: 1.6;
+      margin-top: -.27em
+    }
+
+    @media(max-width:900px) {
+      .tl-list {
+        row-gap: 4rem
+      }
+
+      .tl-step,
+      .tl-step:nth-child(even) {
+        width: 100%;
+        margin: 0;
+        grid-template-columns: 26px minmax(0, 1fr);
+        row-gap: var(--s3);
+        align-items: start
+      }
+
+      .tl-media {
+        grid-column: 2
+      }
+    }
+
+    @media(prefers-reduced-motion:reduce) {
+
+      .mm-play,
+      .mm-ic,
+      .mc-grade,
+      .mc-split {
+        animation: none !important
+      }
+    }
+    .reel {
+      position: relative
+    }
+
+    /* المؤشر يصير زر تشغيل فوق المقطع */
+    .custom-cursor .cursor-play {
+      display: none;
+      width: 26px;
+      height: 26px;
+      margin-left: 3px;
+      color: var(--espresso)
+    }
+
+    @media (pointer: fine) {
+      .custom-cursor.is-play {
+        width: 84px;
+        height: 84px;
+        background: rgba(241, 230, 210, .95);
+        border-color: transparent
+      }
+
+      .custom-cursor.is-play .cursor-play {
+        display: block
+      }
+    }
   </style>
 </head>
 
@@ -2394,45 +2787,53 @@
   <!-- Custom Cursor -->
   <div class="custom-cursor" id="customCursor"><svg class="cursor-arrow" viewBox="0 0 24 24" fill="none"
       stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-      <path d="M15 18l-6-6 6-6" /></svg></div>
+      <path d="M15 18l-6-6 6-6" /></svg><svg class="cursor-play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z" /></svg></div>
 
   <!-- Grain -->
   <div class="grain"></div>
 
 
   <!-- Nav -->
+  <!-- أيقونات خاصة (رموز تُستعمل في خطة العمل والخدمات) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="ic-book" viewBox="0 0 1003 779"><polygon points="0,0 473,268 500,640 529,268 1003,0 963,517 500,779 39,517"/></symbol>
+    <symbol id="ic-clap" viewBox="0 0 1118 1130"><polygon points="468,0 626,159 579,389 422,230"/><polygon points="740,275 898,434 851,664 694,505"/><polygon points="1013,550 1117,656 1117,930 966,779"/><polygon points="130,934 1118,932 924,1130 0,1130"/></symbol>
+    <symbol id="ic-arrow" viewBox="0 0 681 802"><polygon points="192,0 547,192 681,638 326,448 133,802 0,353"/></symbol>
+    <symbol id="ic-wind" viewBox="0 0 960 1050"><polygon points="429,0 641,176 612,463 400,287"/><polygon points="908,218 862,490 599,609 645,337"/><polygon points="959,743 701,838 467,670 725,574"/><polygon points="530,1048 318,872 347,585 559,761"/><polygon points="51,830 97,559 360,440 314,712"/><polygon points="0,306 259,211 493,380 235,475"/></symbol>
+    <symbol id="ic-burst" viewBox="0 0 1000 1012"><polygon points="665,0 713,194 792,162 767,287 1000,302 878,460 951,502 839,559 973,750 773,755 786,838 670,787 604,1012 476,857 418,918 389,797 172,884 211,688 127,683 205,581 0,466 179,377 131,307 258,305 221,73 402,157 426,76 507,173"/></symbol>
+    <symbol id="ic-star" viewBox="0 0 1045 1037"><polygon points="456,0 560,120 637,10 694,157 805,80 808,238 938,203 887,352 1021,365 921,488 1043,545 908,626 1002,721 848,751 905,873 749,849 760,983 622,906 587,1035 483,917 406,1026 349,880 239,957 236,800 106,833 158,685 23,672 122,550 0,492 135,411 40,316 195,286 139,163 295,188 284,54 422,130"/></symbol>
+  </svg>
+
   <nav class="nav" id="nav">
-    <a href="#" class="nav-logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 124.59 124.6">
+    <a href="#" class="nav-logo" aria-label="الرئيسية"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 124.59 124.6">
         <g>
           <polygon class="cls-1"
             points="96.42 76.13 116.49 96.2 76.64 96.2 76.64 124.6 48.46 96.42 28.39 116.49 28.39 76.64 0 76.64 28.18 48.47 8.1 28.39 47.95 28.39 47.95 0 76.13 28.18 96.2 8.1 96.2 47.95 124.59 47.95 96.42 76.13" />
         </g>
       </svg></a>
-    <ul class="nav-links">
+    <ul class="nav-links nav-box">
       <li><a href="#hero"><span data-ar>عني</span><span data-en>About me</span></a></li>
       <li><a href="#work"><span data-ar>الأعمال</span><span data-en>Works</span></a></li>
-      <li><a href="#services"><span data-ar>الخدمات</span><span data-en>Services</span></a></li>
       <li><a href="#process"><span data-ar>الخطة</span><span data-en>Plan</span></a></li>
       <li><a href="#contact"><span data-ar>تواصل</span><span data-en>Contact</span></a></li>
     </ul>
-    <div style="display:flex;align-items:center;gap:.8rem">
-      <button class="lang-toggle" id="langToggle" aria-label="Switch language"><svg viewBox="0 0 24 24"
+    <div class="nav-end">
+      <button class="lang-toggle nav-box" id="langToggle" aria-label="Switch language"><svg viewBox="0 0 24 24"
           xmlns="http://www.w3.org/2000/svg">
           <circle cx="12" cy="12" r="10" />
           <path d="M2 12h20" />
           <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10A15.3 15.3 0 0 1 12 2z" />
         </svg></button>
+      <button class="hamburger nav-box" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
     </div>
-    <button class="hamburger" id="hamburger" aria-label="Menu">
-      <span></span><span></span><span></span>
-    </button>
   </nav>
 
   <!-- Mobile Menu -->
   <div class="mobile-menu" id="mobileMenu">
     <a href="#hero" class="mobile-link"><span data-ar>عني</span><span data-en>About me</span></a>
     <a href="#work" class="mobile-link"><span data-ar>الأعمال</span><span data-en>Works</span></a>
-    <a href="#services" class="mobile-link"><span data-ar>الخدمات</span><span data-en>Services</span></a>
     <a href="#process" class="mobile-link"><span data-ar>الخطة</span><span data-en>Plan</span></a>
     <a href="#contact" class="mobile-link" style="color:var(--flame)"><span data-ar>تواصل معي</span><span
         data-en>Contact me</span></a>
@@ -2441,7 +2842,6 @@
   <!-- ═══════════════ HERO ═══════════════ -->
   <main id="main">
   <section class="hero" id="hero">
-    <div class="hero-letterbox top"></div>
     <div class="hero-text-side">
       <h1><span data-ar>محمد رجب</span><span data-en>Mohammed Rajab</span></h1>
       <p class="hero-sub" data-ar>مونتير وموشن ديزاينر بخلفية في التصميم، أنسج مقاطعي بقصص وطرق تبسّط الأفكار.</p>
@@ -2484,98 +2884,6 @@
     <div class="section-inner">
       <h2 class="section-title work-title"><span data-ar>أعمال مختارة</span><span data-en>Selected Works</span></h2>
 
-      <div class="reel" data-reel="edit">
-        <div class="reel-head">
-          <h3><span data-ar>مونتاج</span><span data-en>Video Editing</span></h3>
-        </div>
-        <div class="reel-stage" tabindex="0" aria-roledescription="carousel" aria-label="مونتاج">
-          <div class="reel-card" role="button" tabindex="-1" data-video-id="h9WQT7gMP6E" data-title="بودكاست يا غلام">
-            <div class="reel-poster" style="--bg:#A9502A;--lf:brightness(0) invert(1);--lw:44%">
-              <img class="reel-shot" src="images/works/yaghulam-shot.webp" alt="" loading="lazy" draggable="false">
-              <img class="reel-mark" src="images/works/yaghulam-stroke.webp" alt="" loading="lazy" draggable="false">
-              <img class="reel-logo" src="images/works/yaghulam-logo.svg" alt="بودكاست يا غلام" loading="lazy" draggable="false">
-            </div>
-            <span class="reel-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l12-7.5z" /></svg></span>
-            <template>
-              <div class="reel-info-top">
-                <h4 class="reel-title"><span data-ar>بودكاست يا غلام</span><span data-en>Ya Ghulam Podcast</span></h4>
-                <span class="reel-year">2025</span>
-              </div>
-              <p class="reel-desc"><span data-ar>بودكاست من أربع حلقات موجّه للشباب، يروي فيه الضيوف خبراتهم ليعرّفوهم بمجالات جديدة. تولّيت مونتاج الحلقات وتصميم جرافيكس البرنامج، من العناوين السفلية إلى الخاتمة.</span><span data-en>A four-episode podcast for young people, where guests share their experience to open up new fields. I edited the episodes and designed the show's graphics, from lower thirds to the outro.</span></p>
-              <p class="reel-credit"><span data-ar>فلق — تحت راية مدونة ستوديو</span><span data-en>Falak — Under Mdwna Studio</span></p>
-            </template>
-          </div>
-          <div class="reel-card" role="button" tabindex="-1" data-video-id="ZBzAxJ8hloA" data-title="رايح جاي: حي الشميسي">
-            <div class="reel-poster" style="--bg:#6A1D38;--lf:none;--lw:17%">
-              <img class="reel-shot" src="images/works/shumaisi-shot.webp" alt="" loading="lazy" draggable="false">
-              <img class="reel-mark" src="images/works/shumaisi-stroke.webp" alt="" loading="lazy" draggable="false">
-              <img class="reel-logo" src="images/works/shumaisi-logo.webp" alt="رايح جاي: حي الشميسي" loading="lazy" draggable="false">
-            </div>
-            <span class="reel-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l12-7.5z" /></svg></span>
-            <template>
-              <div class="reel-info-top">
-                <h4 class="reel-title"><span data-ar>رايح جاي: حي الشميسي</span><span data-en>Rayeh Jay: Al-Shumaisi</span></h4>
-                <span class="reel-year">2026</span>
-              </div>
-              <p class="reel-desc"><span data-ar>فيلم وثائقي قصير عن حي الشميسي في الرياض، يُظهر روح الحي وأماكنه التاريخية. تولّيت المونتاج من اللقطات الخام حتى الفيلم النهائي، مع ثمانية مقتطفات قصيرة للنشر.</span><span data-en>A short documentary on Riyadh's Al-Shumaisi district, capturing its spirit and historic places. I edited it from raw footage to the final film, plus eight short cut-downs for social.</span></p>
-              <p class="reel-credit"><span data-ar>فلق · قناة عنب — تحت راية مدونة ستوديو</span><span data-en>Falak · Enab — Under Mdwna Studio</span></p>
-            </template>
-          </div>
-          <div class="reel-card" role="button" tabindex="-1" data-video-id="1CtOIAgf-ig" data-title="حراساثون">
-            <div class="reel-poster" style="--bg:#8A1320;--lf:none;--lw:42%">
-              <img class="reel-shot" src="images/works/herasathon-shot.webp" alt="" loading="lazy" draggable="false">
-              <img class="reel-mark" src="images/works/herasathon-stroke.webp" alt="" loading="lazy" draggable="false">
-              <img class="reel-logo" src="images/works/herasathon-logo.webp" alt="حراساثون" loading="lazy" draggable="false">
-            </div>
-            <span class="reel-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l12-7.5z" /></svg></span>
-            <template>
-              <div class="reel-info-top">
-                <h4 class="reel-title"><span data-ar>حراساثون</span><span data-en>Herasathon</span></h4>
-                <span class="reel-year">2026</span>
-              </div>
-              <p class="reel-desc"><span data-ar>هاكاثون في الحراسة الأمنية نظّمته النصبان للحراسات الأمنية. تولّيت مونتاج مقطعين يوثّقان الحدث، وهذا أحدهما.</span><span data-en>A security guarding hackathon organized by Al Nasban Security Guards. I edited two pieces documenting the event; this is one of them.</span></p>
-              <p class="reel-credit"><span data-ar>النصبان للحراسات الأمنية — تحت راية مدونة ستوديو</span><span data-en>Al Nasban Security Guards — Under Mdwna Studio</span></p>
-            </template>
-          </div>
-          <div class="reel-card" role="button" tabindex="-1" data-video-id="GK-QrpNLxPE" data-title="مدرب نادي الاعتماد">
-            <div class="reel-poster" style="--bg:#16566E;--lf:brightness(0) invert(1);--lw:24%">
-              <img class="reel-shot" src="images/works/etimad-shot.webp" alt="" loading="lazy" draggable="false">
-              <img class="reel-mark" src="images/works/etimad-stroke.webp" alt="" loading="lazy" draggable="false">
-              <img class="reel-logo" src="images/works/etimad-logo.svg" alt="مدرب نادي الاعتماد" loading="lazy" draggable="false">
-            </div>
-            <span class="reel-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l12-7.5z" /></svg></span>
-            <template>
-              <div class="reel-info-top">
-                <h4 class="reel-title"><span data-ar>مدرب نادي الاعتماد</span><span data-en>The Al-EETEMAD Coach</span></h4>
-                <span class="reel-year">2024</span>
-              </div>
-              <p class="reel-desc"><span data-ar>قصة الأستاذ نواف خيري الحكمي، مدرب نادي الاعتماد، وكيف دخل عالم كرة الريشة. تولّيت مونتاج المقابلة مع لقاءات قصيرة من أعضاء فريقه.</span><span data-en>The story of Nawaf Khairi Al-Hakami, coach of Al-EETEMAD Club, and how he found his way into badminton. I edited the interview along with short clips from his team.</span></p>
-              <p class="reel-credit"><span data-ar>نادي الاعتماد — تحت راية مدونة ستوديو</span><span data-en>Al-EETEMAD Club — Under Mdwna Studio</span></p>
-            </template>
-          </div>
-          <div class="reel-card" role="button" tabindex="-1" data-video-id="rlEyarTEnd4" data-vertical data-title="مع الله: البركة">
-            <div class="reel-poster" style="--bg:#A97B12;--lf:none;--lw:16%">
-              <img class="reel-shot" src="images/works/baraka-shot.webp" alt="" loading="lazy" draggable="false">
-              <img class="reel-mark" src="images/works/laan-stroke.webp" alt="" loading="lazy" draggable="false">
-              <img class="reel-logo" src="images/works/laan-logo.webp" alt="مع الله: البركة" loading="lazy" draggable="false">
-            </div>
-            <span class="reel-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l12-7.5z" /></svg></span>
-            <template>
-              <div class="reel-info-top">
-                <h4 class="reel-title"><span data-ar>مع الله: البركة</span><span data-en>Ma'a Allah: Barakah</span></h4>
-                <span class="reel-year">2025</span>
-              </div>
-              <p class="reel-desc"><span data-ar>حلقة توعوية من برنامج «مع الله» عن البركة. تولّيت مونتاجها، ضمن أكثر من 75 حلقة من البرنامج على مدى سنة كاملة.</span><span data-en>An awareness episode of the “Ma'a Allah” program about barakah. I edited it, one of more than 75 episodes of the program over a full year.</span></p>
-              <p class="reel-credit"><span data-ar>مع الله — تحت راية مدونة ستوديو</span><span data-en>Ma'a Allah — Under Mdwna Studio</span></p>
-            </template>
-          </div>
-        </div>
-        <div class="reel-info" aria-live="polite">
-          <div class="reel-info-body"></div>
-          <button class="reel-close"><span data-ar>إغلاق المقطع</span><span data-en>Close video</span></button>
-        </div>
-      </div>
-
       <div class="reel" data-reel="motion">
         <div class="reel-head">
           <h3><span data-ar>موشن</span><span data-en>Motion</span></h3>
@@ -2587,7 +2895,6 @@
               <img class="reel-mark" src="images/works/jazeel-stroke.webp" alt="" loading="lazy" draggable="false">
               <img class="reel-logo" src="images/works/jazeel-logo.webp" alt="شوكولاوة جزيل" loading="lazy" draggable="false">
             </div>
-            <span class="reel-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l12-7.5z" /></svg></span>
             <template>
               <div class="reel-info-top">
                 <h4 class="reel-title"><span data-ar>شوكولاوة جزيل</span><span data-en>Jazeel Chocolawa</span></h4>
@@ -2603,7 +2910,6 @@
               <img class="reel-mark" src="images/works/satr-stroke.webp" alt="" loading="lazy" draggable="false">
               <img class="reel-logo" src="images/works/satr-logo.svg" alt="استعراض هوية سطر" loading="lazy" draggable="false">
             </div>
-            <span class="reel-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l12-7.5z" /></svg></span>
             <template>
               <div class="reel-info-top">
                 <h4 class="reel-title"><span data-ar>استعراض هوية سطر</span><span data-en>Satr Identity Reveal</span></h4>
@@ -2619,7 +2925,6 @@
               <img class="reel-mark" src="images/works/lunanera-stroke.webp" alt="" loading="lazy" draggable="false">
               <img class="reel-logo" src="images/works/lunanera-logo.webp" alt="خدمات لونانيرا" loading="lazy" draggable="false">
             </div>
-            <span class="reel-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l12-7.5z" /></svg></span>
             <template>
               <div class="reel-info-top">
                 <h4 class="reel-title"><span data-ar>خدمات لونانيرا</span><span data-en>Lunanera Services</span></h4>
@@ -2635,7 +2940,6 @@
               <img class="reel-mark" src="images/works/laan-stroke.webp" alt="" loading="lazy" draggable="false">
               <img class="reel-logo" src="images/works/laan-logo.webp" alt="مع الله: خطورة اللعن" loading="lazy" draggable="false">
             </div>
-            <span class="reel-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l12-7.5z" /></svg></span>
             <template>
               <div class="reel-info-top">
                 <h4 class="reel-title"><span data-ar>مع الله: خطورة اللعن</span><span data-en>Ma'a Allah: The Gravity of Cursing</span></h4>
@@ -2651,7 +2955,6 @@
               <img class="reel-mark" src="images/works/urwa-stroke.webp" alt="" loading="lazy" draggable="false">
               <img class="reel-logo" src="images/works/urwa-logo.svg" alt="العروة الوثقى: قانون الجذب" loading="lazy" draggable="false">
             </div>
-            <span class="reel-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l12-7.5z" /></svg></span>
             <template>
               <div class="reel-info-top">
                 <h4 class="reel-title"><span data-ar>العروة الوثقى: قانون الجذب</span><span data-en>Al-Urwa Al-Wuthqa: The Law of Attraction</span></h4>
@@ -2664,9 +2967,94 @@
         </div>
         <div class="reel-info" aria-live="polite">
           <div class="reel-info-body"></div>
-          <button class="reel-close"><span data-ar>إغلاق المقطع</span><span data-en>Close video</span></button>
         </div>
       </div>
+      <div class="reel" data-reel="edit">
+        <div class="reel-head">
+          <h3><span data-ar>مونتاج</span><span data-en>Video Editing</span></h3>
+        </div>
+        <div class="reel-stage" tabindex="0" aria-roledescription="carousel" aria-label="مونتاج">
+          <div class="reel-card" role="button" tabindex="-1" data-video-id="h9WQT7gMP6E" data-title="بودكاست يا غلام">
+            <div class="reel-poster" style="--bg:#A9502A;--lf:brightness(0) invert(1);--lw:44%">
+              <img class="reel-shot" src="images/works/yaghulam-shot.webp" alt="" loading="lazy" draggable="false">
+              <img class="reel-mark" src="images/works/yaghulam-stroke.webp" alt="" loading="lazy" draggable="false">
+              <img class="reel-logo" src="images/works/yaghulam-logo.svg" alt="بودكاست يا غلام" loading="lazy" draggable="false">
+            </div>
+            <template>
+              <div class="reel-info-top">
+                <h4 class="reel-title"><span data-ar>بودكاست يا غلام</span><span data-en>Ya Ghulam Podcast</span></h4>
+                <span class="reel-year">2025</span>
+              </div>
+              <p class="reel-desc"><span data-ar>بودكاست من أربع حلقات موجّه للشباب، يروي فيه الضيوف خبراتهم ليعرّفوهم بمجالات جديدة. تولّيت مونتاج الحلقات وتصميم جرافيكس البرنامج، من العناوين السفلية إلى الخاتمة.</span><span data-en>A four-episode podcast for young people, where guests share their experience to open up new fields. I edited the episodes and designed the show's graphics, from lower thirds to the outro.</span></p>
+              <p class="reel-credit"><span data-ar>فلق — تحت راية مدونة ستوديو</span><span data-en>Falak — Under Mdwna Studio</span></p>
+            </template>
+          </div>
+          <div class="reel-card" role="button" tabindex="-1" data-video-id="ZBzAxJ8hloA" data-title="رايح جاي: حي الشميسي">
+            <div class="reel-poster" style="--bg:#6A1D38;--lf:none;--lw:17%">
+              <img class="reel-shot" src="images/works/shumaisi-shot.webp" alt="" loading="lazy" draggable="false">
+              <img class="reel-mark" src="images/works/shumaisi-stroke.webp" alt="" loading="lazy" draggable="false">
+              <img class="reel-logo" src="images/works/shumaisi-logo.webp" alt="رايح جاي: حي الشميسي" loading="lazy" draggable="false">
+            </div>
+            <template>
+              <div class="reel-info-top">
+                <h4 class="reel-title"><span data-ar>رايح جاي: حي الشميسي</span><span data-en>Rayeh Jay: Al-Shumaisi</span></h4>
+                <span class="reel-year">2026</span>
+              </div>
+              <p class="reel-desc"><span data-ar>فيلم وثائقي قصير عن حي الشميسي في الرياض، يُظهر روح الحي وأماكنه التاريخية. تولّيت المونتاج من اللقطات الخام حتى الفيلم النهائي، مع ثمانية مقتطفات قصيرة للنشر.</span><span data-en>A short documentary on Riyadh's Al-Shumaisi district, capturing its spirit and historic places. I edited it from raw footage to the final film, plus eight short cut-downs for social.</span></p>
+              <p class="reel-credit"><span data-ar>فلق · قناة عنب — تحت راية مدونة ستوديو</span><span data-en>Falak · Enab — Under Mdwna Studio</span></p>
+            </template>
+          </div>
+          <div class="reel-card" role="button" tabindex="-1" data-video-id="1CtOIAgf-ig" data-title="حراساثون">
+            <div class="reel-poster" style="--bg:#8A1320;--lf:none;--lw:42%">
+              <img class="reel-shot" src="images/works/herasathon-shot.webp" alt="" loading="lazy" draggable="false">
+              <img class="reel-mark" src="images/works/herasathon-stroke.webp" alt="" loading="lazy" draggable="false">
+              <img class="reel-logo" src="images/works/herasathon-logo.webp" alt="حراساثون" loading="lazy" draggable="false">
+            </div>
+            <template>
+              <div class="reel-info-top">
+                <h4 class="reel-title"><span data-ar>حراساثون</span><span data-en>Herasathon</span></h4>
+                <span class="reel-year">2026</span>
+              </div>
+              <p class="reel-desc"><span data-ar>هاكاثون في الحراسة الأمنية نظّمته النصبان للحراسات الأمنية. تولّيت مونتاج مقطعين يوثّقان الحدث، وهذا أحدهما.</span><span data-en>A security guarding hackathon organized by Al Nasban Security Guards. I edited two pieces documenting the event; this is one of them.</span></p>
+              <p class="reel-credit"><span data-ar>النصبان للحراسات الأمنية — تحت راية مدونة ستوديو</span><span data-en>Al Nasban Security Guards — Under Mdwna Studio</span></p>
+            </template>
+          </div>
+          <div class="reel-card" role="button" tabindex="-1" data-video-id="GK-QrpNLxPE" data-title="مدرب نادي الاعتماد">
+            <div class="reel-poster" style="--bg:#16566E;--lf:brightness(0) invert(1);--lw:24%">
+              <img class="reel-shot" src="images/works/etimad-shot.webp" alt="" loading="lazy" draggable="false">
+              <img class="reel-mark" src="images/works/etimad-stroke.webp" alt="" loading="lazy" draggable="false">
+              <img class="reel-logo" src="images/works/etimad-logo.svg" alt="مدرب نادي الاعتماد" loading="lazy" draggable="false">
+            </div>
+            <template>
+              <div class="reel-info-top">
+                <h4 class="reel-title"><span data-ar>مدرب نادي الاعتماد</span><span data-en>The Al-EETEMAD Coach</span></h4>
+                <span class="reel-year">2024</span>
+              </div>
+              <p class="reel-desc"><span data-ar>قصة الأستاذ نواف خيري الحكمي، مدرب نادي الاعتماد، وكيف دخل عالم كرة الريشة. تولّيت مونتاج المقابلة مع لقاءات قصيرة من أعضاء فريقه.</span><span data-en>The story of Nawaf Khairi Al-Hakami, coach of Al-EETEMAD Club, and how he found his way into badminton. I edited the interview along with short clips from his team.</span></p>
+              <p class="reel-credit"><span data-ar>نادي الاعتماد — تحت راية مدونة ستوديو</span><span data-en>Al-EETEMAD Club — Under Mdwna Studio</span></p>
+            </template>
+          </div>
+          <div class="reel-card" role="button" tabindex="-1" data-video-id="rlEyarTEnd4" data-vertical data-title="مع الله: البركة">
+            <div class="reel-poster" style="--bg:#A97B12;--lf:none;--lw:16%">
+              <img class="reel-shot" src="images/works/baraka-shot.webp" alt="" loading="lazy" draggable="false">
+              <img class="reel-mark" src="images/works/laan-stroke.webp" alt="" loading="lazy" draggable="false">
+              <img class="reel-logo" src="images/works/laan-logo.webp" alt="مع الله: البركة" loading="lazy" draggable="false">
+            </div>
+            <template>
+              <div class="reel-info-top">
+                <h4 class="reel-title"><span data-ar>مع الله: البركة</span><span data-en>Ma'a Allah: Barakah</span></h4>
+                <span class="reel-year">2025</span>
+              </div>
+              <p class="reel-desc"><span data-ar>حلقة توعوية من برنامج «مع الله» عن البركة. تولّيت مونتاجها، ضمن أكثر من 75 حلقة من البرنامج على مدى سنة كاملة.</span><span data-en>An awareness episode of the “Ma'a Allah” program about barakah. I edited it, one of more than 75 episodes of the program over a full year.</span></p>
+              <p class="reel-credit"><span data-ar>مع الله — تحت راية مدونة ستوديو</span><span data-en>Ma'a Allah — Under Mdwna Studio</span></p>
+            </template>
+          </div>
+        </div>
+        <div class="reel-info" aria-live="polite">
+          <div class="reel-info-body"></div>
+        </div>
+      </div>
+
     </div>
   </section>
 
@@ -2675,96 +3063,61 @@
     <div class="section-inner">
       <h2 class="partners-title"><span data-ar>شركاء النجاح</span><span data-en>Partners in Success</span></h2>
     </div>
-    <div class="partners-marquee">
+    <div class="partners-marquee" data-dir="1">
       <div class="partners-track">
         <div class="partners-set">
-          <div class="partner"><img src="images/partners/maknoon.webp" alt="مكنون" loading="lazy" draggable="false" style="--w:105"></div>
           <div class="partner"><img src="images/partners/jazeel.webp" alt="جزيل" loading="lazy" draggable="false" style="--w:118"></div>
-          <div class="partner"><img src="images/partners/minhaj.webp" alt="منهاج" loading="lazy" draggable="false" style="--w:124"></div>
-          <div class="partner"><img src="images/partners/syaj.webp" alt="سياج العقارية" loading="lazy" draggable="false" style="--w:190"></div>
+          <div class="partner"><img src="images/partners/maknoon.webp" alt="مكنون" loading="lazy" draggable="false" style="--w:105"></div>
           <div class="partner"><img src="images/partners/alnasban.webp" alt="النصبان للحراسات الأمنية" loading="lazy" draggable="false" style="--w:205"></div>
+          <div class="partner"><img src="images/partners/syaj.webp" alt="سياج العقارية" loading="lazy" draggable="false" style="--w:190"></div>
+          <div class="partner"><img src="images/partners/mdwna.svg" alt="مدونة ستوديو" loading="lazy" draggable="false" style="--w:130"></div>
           <div class="partner"><img src="images/partners/tts.webp" alt="التحول التقني" loading="lazy" draggable="false" style="--w:129"></div>
-          <div class="partner"><img src="images/partners/ixina.webp" alt="ixina" loading="lazy" draggable="false" style="--w:150"></div>
+          <div class="partner"><img src="images/partners/salem-alsubaie.webp" alt="مجموعة سالم السبيعي القابضة" loading="lazy" draggable="false" style="--w:130"></div>
           <div class="partner"><img src="images/partners/taseel.webp" alt="تأصيل التعليمية" loading="lazy" draggable="false" style="--w:142"></div>
           <div class="partner"><img src="images/partners/utility.svg" alt="Utility Real Estate" loading="lazy" draggable="false" style="--w:164"></div>
           <div class="partner"><img src="images/partners/blnz.svg" alt="بلنز للتطوير والاستثمار العقاري" loading="lazy" draggable="false" style="--w:128"></div>
-          <div class="partner"><img src="images/partners/salem-alsubaie.webp" alt="مجموعة سالم السبيعي القابضة" loading="lazy" draggable="false" style="--w:130"></div>
           <div class="partner"><img src="images/partners/tahadani.webp" alt="تحداني" loading="lazy" draggable="false" style="--w:169"></div>
-          <div class="partner"><img src="images/partners/camel-club.svg" alt="نادي الإبل" loading="lazy" draggable="false" style="--w:170"></div>
-          <div class="partner"><img src="images/partners/wasm-alsiba.webp" alt="جمعية وسم الصبا" loading="lazy" draggable="false" style="--w:107"></div>
-          <div class="partner"><img src="images/partners/lutf.webp" alt="مركز لطف للاستشارات التعليمية والتربوية" loading="lazy" draggable="false" style="--w:104"></div>
-          <div class="partner"><img src="images/partners/nibras.webp" alt="نبراس" loading="lazy" draggable="false" style="--w:105"></div>
-          <div class="partner"><img src="images/partners/alwan.webp" alt="أكاديمية ألوان" loading="lazy" draggable="false" style="--w:95"></div>
-          <div class="partner"><img src="images/partners/ananas.webp" alt="محمصة أناناس" loading="lazy" draggable="false" style="--w:180"></div>
-          <div class="partner"><img src="images/partners/azomah.webp" alt="عزومة" loading="lazy" draggable="false" style="--w:129"></div>
-          <div class="partner"><img src="images/partners/mdwna.svg" alt="مدونة ستوديو" loading="lazy" draggable="false" style="--w:130"></div>
-          <div class="partner"><img src="images/partners/falak.webp" alt="فلق" loading="lazy" draggable="false" style="--w:94"></div>
         </div>
         <div class="partners-set" aria-hidden="true">
-          <div class="partner"><img src="images/partners/maknoon.webp" alt="" loading="lazy" draggable="false" style="--w:105"></div>
           <div class="partner"><img src="images/partners/jazeel.webp" alt="" loading="lazy" draggable="false" style="--w:118"></div>
-          <div class="partner"><img src="images/partners/minhaj.webp" alt="" loading="lazy" draggable="false" style="--w:124"></div>
-          <div class="partner"><img src="images/partners/syaj.webp" alt="" loading="lazy" draggable="false" style="--w:190"></div>
+          <div class="partner"><img src="images/partners/maknoon.webp" alt="" loading="lazy" draggable="false" style="--w:105"></div>
           <div class="partner"><img src="images/partners/alnasban.webp" alt="" loading="lazy" draggable="false" style="--w:205"></div>
+          <div class="partner"><img src="images/partners/syaj.webp" alt="" loading="lazy" draggable="false" style="--w:190"></div>
+          <div class="partner"><img src="images/partners/mdwna.svg" alt="" loading="lazy" draggable="false" style="--w:130"></div>
           <div class="partner"><img src="images/partners/tts.webp" alt="" loading="lazy" draggable="false" style="--w:129"></div>
-          <div class="partner"><img src="images/partners/ixina.webp" alt="" loading="lazy" draggable="false" style="--w:150"></div>
+          <div class="partner"><img src="images/partners/salem-alsubaie.webp" alt="" loading="lazy" draggable="false" style="--w:130"></div>
           <div class="partner"><img src="images/partners/taseel.webp" alt="" loading="lazy" draggable="false" style="--w:142"></div>
           <div class="partner"><img src="images/partners/utility.svg" alt="" loading="lazy" draggable="false" style="--w:164"></div>
           <div class="partner"><img src="images/partners/blnz.svg" alt="" loading="lazy" draggable="false" style="--w:128"></div>
-          <div class="partner"><img src="images/partners/salem-alsubaie.webp" alt="" loading="lazy" draggable="false" style="--w:130"></div>
           <div class="partner"><img src="images/partners/tahadani.webp" alt="" loading="lazy" draggable="false" style="--w:169"></div>
-          <div class="partner"><img src="images/partners/camel-club.svg" alt="" loading="lazy" draggable="false" style="--w:170"></div>
-          <div class="partner"><img src="images/partners/wasm-alsiba.webp" alt="" loading="lazy" draggable="false" style="--w:107"></div>
-          <div class="partner"><img src="images/partners/lutf.webp" alt="" loading="lazy" draggable="false" style="--w:104"></div>
-          <div class="partner"><img src="images/partners/nibras.webp" alt="" loading="lazy" draggable="false" style="--w:105"></div>
-          <div class="partner"><img src="images/partners/alwan.webp" alt="" loading="lazy" draggable="false" style="--w:95"></div>
-          <div class="partner"><img src="images/partners/ananas.webp" alt="" loading="lazy" draggable="false" style="--w:180"></div>
-          <div class="partner"><img src="images/partners/azomah.webp" alt="" loading="lazy" draggable="false" style="--w:129"></div>
-          <div class="partner"><img src="images/partners/mdwna.svg" alt="" loading="lazy" draggable="false" style="--w:130"></div>
-          <div class="partner"><img src="images/partners/falak.webp" alt="" loading="lazy" draggable="false" style="--w:94"></div>
         </div>
       </div>
     </div>
-  </section>
-
-  <!-- ═══════════════ SERVICES ═══════════════ -->
-  <section class="section-dark" id="services">
-    <div class="section-inner">
-      <div class="services-head">
-        <h2 class="section-title"><span data-ar>ماذا أقدم؟</span><span data-en>What do I offer?</span></h2>
-        <p class="section-desc" data-ar>من استلام المادة حتى التسليم، هذا ما أتولّاه في كل مقطع.</p>
-        <p class="section-desc" data-en>From raw material to final delivery, this is what I take care of in every piece.</p>
-      </div>
-      <div class="caps">
-        <div class="cap">
-          <h3><span data-ar>المونتاج</span><span data-en>Video Editing</span></h3>
-          <p data-ar>أحوّل اللقطات الخام إلى مقطع متكامل.</p>
-          <p data-en>Raw footage turned into a finished piece.</p>
+    <div class="partners-marquee" data-dir="-1">
+      <div class="partners-track">
+        <div class="partners-set">
+          <div class="partner"><img src="images/partners/falak.webp" alt="فلق" loading="lazy" draggable="false" style="--w:94"></div>
+          <div class="partner"><img src="images/partners/wasm-alsiba.webp" alt="جمعية وسم الصبا" loading="lazy" draggable="false" style="--w:107"></div>
+          <div class="partner"><img src="images/partners/minhaj.webp" alt="منهاج" loading="lazy" draggable="false" style="--w:124"></div>
+          <div class="partner"><img src="images/partners/lutf.webp" alt="مركز لطف للاستشارات التعليمية والتربوية" loading="lazy" draggable="false" style="--w:104"></div>
+          <div class="partner"><img src="images/partners/camel-club.svg" alt="نادي الإبل" loading="lazy" draggable="false" style="--w:170"></div>
+          <div class="partner"><img src="images/partners/nibras.webp" alt="نبراس" loading="lazy" draggable="false" style="--w:105"></div>
+          <div class="partner"><img src="images/partners/ixina.webp" alt="ixina" loading="lazy" draggable="false" style="--w:150"></div>
+          <div class="partner"><img src="images/partners/alwan.webp" alt="أكاديمية ألوان" loading="lazy" draggable="false" style="--w:95"></div>
+          <div class="partner"><img src="images/partners/ananas.webp" alt="محمصة أناناس" loading="lazy" draggable="false" style="--w:180"></div>
+          <div class="partner"><img src="images/partners/azomah.webp" alt="عزومة" loading="lazy" draggable="false" style="--w:129"></div>
         </div>
-        <div class="cap">
-          <h3><span data-ar>الموشن</span><span data-en>Motion</span></h3>
-          <p data-ar>أحرّك النصوص والرسوم والشعارات.</p>
-          <p data-en>Animated text, graphics and logos.</p>
-        </div>
-        <div class="cap">
-          <h3><span data-ar>بناء القصة</span><span data-en>Storytelling</span></h3>
-          <p data-ar>أرتّب الفكرة لتصل بوضوح.</p>
-          <p data-en>Structuring the idea so it lands clearly.</p>
-        </div>
-        <div class="cap">
-          <h3><span data-ar>تصحيح الألوان</span><span data-en>Color Grading</span></h3>
-          <p data-ar>ألوان متناسقة تخدم الإحساس.</p>
-          <p data-en>Consistent color that serves the mood.</p>
-        </div>
-        <div class="cap">
-          <h3><span data-ar>معالجة الصوت</span><span data-en>Audio</span></h3>
-          <p data-ar>صوت نظيف ومتوازن.</p>
-          <p data-en>Clean, balanced sound.</p>
-        </div>
-        <div class="cap">
-          <h3><span data-ar>الترجمة النصية</span><span data-en>Subtitles</span></h3>
-          <p data-ar>نصوص مضبوطة ومتزامنة.</p>
-          <p data-en>Accurate, well-timed captions.</p>
+        <div class="partners-set" aria-hidden="true">
+          <div class="partner"><img src="images/partners/falak.webp" alt="" loading="lazy" draggable="false" style="--w:94"></div>
+          <div class="partner"><img src="images/partners/wasm-alsiba.webp" alt="" loading="lazy" draggable="false" style="--w:107"></div>
+          <div class="partner"><img src="images/partners/minhaj.webp" alt="" loading="lazy" draggable="false" style="--w:124"></div>
+          <div class="partner"><img src="images/partners/lutf.webp" alt="" loading="lazy" draggable="false" style="--w:104"></div>
+          <div class="partner"><img src="images/partners/camel-club.svg" alt="" loading="lazy" draggable="false" style="--w:170"></div>
+          <div class="partner"><img src="images/partners/nibras.webp" alt="" loading="lazy" draggable="false" style="--w:105"></div>
+          <div class="partner"><img src="images/partners/ixina.webp" alt="" loading="lazy" draggable="false" style="--w:150"></div>
+          <div class="partner"><img src="images/partners/alwan.webp" alt="" loading="lazy" draggable="false" style="--w:95"></div>
+          <div class="partner"><img src="images/partners/ananas.webp" alt="" loading="lazy" draggable="false" style="--w:180"></div>
+          <div class="partner"><img src="images/partners/azomah.webp" alt="" loading="lazy" draggable="false" style="--w:129"></div>
         </div>
       </div>
     </div>
@@ -2772,34 +3125,53 @@
 
   <!-- ═══════════════ PROCESS ═══════════════ -->
   <section class="section-dark" id="process">
+    <div class="tl-bgs" aria-hidden="true">
+      <div class="tl-bg-pin">
+        <img class="tl-bg tl-bg-brief" src="images/process/brief.webp" alt="" loading="lazy" draggable="false">
+        <img class="tl-bg" src="images/process/storyboard.webp" alt="" loading="lazy" draggable="false">
+        <img class="tl-bg" src="images/process/timeline.webp" alt="" loading="lazy" draggable="false">
+        <img class="tl-bg" src="images/process/delivery.webp" alt="" loading="lazy" draggable="false">
+      </div>
+    </div>
     <div class="section-inner">
       <h2 class="section-title steps-title"><span data-ar>خطة العمل</span><span data-en>The Work Plan</span></h2>
-      <ol class="steps">
-        <li class="step">
-          <div class="process-step-num">01</div>
-          <h3><span data-ar>فهم الرؤية</span><span data-en>Understanding the Vision</span></h3>
-          <p data-ar>الهدف والجمهور والاتجاه.</p>
-          <p data-en>Goal, audience and direction.</p>
-        </li>
-        <li class="step">
-          <div class="process-step-num">02</div>
-          <h3><span data-ar>صناعة المخطط</span><span data-en>Making the Blueprint</span></h3>
-          <p data-ar>تصوّر مبدئي قبل البدء.</p>
-          <p data-en>A rough visual before we start.</p>
-        </li>
-        <li class="step">
-          <div class="process-step-num">03</div>
-          <h3><span data-ar>الطبخ</span><span data-en>Cooking</span></h3>
-          <p data-ar>تنفيذ الخطة خطوة بخطوة.</p>
-          <p data-en>Building it, step by step.</p>
-        </li>
-        <li class="step">
-          <div class="process-step-num">04</div>
-          <h3><span data-ar>المراجعة والتسليم</span><span data-en>Review and Delivery</span></h3>
-          <p data-ar>صقل التفاصيل ثم التسليم.</p>
-          <p data-en>Polish, then final delivery.</p>
-        </li>
-      </ol>
+      <div class="tl">
+        <svg class="tl-svg" aria-hidden="true"><path class="tl-guide" /><path class="tl-draw" /><circle class="tl-head" r="6" /></svg>
+        <ol class="tl-list">
+          <li class="tl-step">
+            <span class="tl-node" aria-hidden="true"></span>
+            <div class="tl-text">
+              <h3><span data-ar>فهم الرؤية</span><span data-en>Understanding the Vision</span></h3>
+              <p data-ar>الهدف والجمهور والاتجاه.</p>
+              <p data-en>Goal, audience and direction.</p>
+            </div>
+          </li>
+          <li class="tl-step">
+            <span class="tl-node" aria-hidden="true"></span>
+            <div class="tl-text">
+              <h3><span data-ar>صناعة المخطط</span><span data-en>Making the Blueprint</span></h3>
+              <p data-ar>تصوّر مبدئي قبل البدء.</p>
+              <p data-en>A rough visual before we start.</p>
+            </div>
+          </li>
+          <li class="tl-step">
+            <span class="tl-node" aria-hidden="true"></span>
+            <div class="tl-text">
+              <h3><span data-ar>الطبخ</span><span data-en>Cooking</span></h3>
+              <p data-ar>تنفيذ الخطة خطوة بخطوة.</p>
+              <p data-en>Building it, step by step.</p>
+            </div>
+          </li>
+          <li class="tl-step">
+            <span class="tl-node" aria-hidden="true"></span>
+            <div class="tl-text">
+              <h3><span data-ar>المراجعة والتسليم</span><span data-en>Review and Delivery</span></h3>
+              <p data-ar>صقل التفاصيل ثم التسليم.</p>
+              <p data-en>Polish, then final delivery.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
     </div>
   </section>
 
@@ -2902,7 +3274,6 @@
       <ul class="footer-links">
         <li><a href="#hero"><span data-ar>عني</span><span data-en>About me</span></a></li>
         <li><a href="#work"><span data-ar>الأعمال</span><span data-en>Works</span></a></li>
-        <li><a href="#services"><span data-ar>الخدمات</span><span data-en>Services</span></a></li>
         <li><a href="#contact"><span data-ar>تواصل</span><span data-en>Contact</span></a></li>
       </ul>
     </div>
@@ -3322,15 +3693,16 @@
           c.style.marginTop = (-h / 2).toFixed(0) + 'px';
           stage.style.height = (h + 32).toFixed(0) + 'px';
           stage.style.marginBlock = '0px';
-          // زر إغلاق دائم بجانب المقطع
+          // زر إغلاق دائم فوق المقطع عند زاويته
           const x = document.createElement('button');
           x.className = 'reel-x';
           x.setAttribute('aria-label', isRTL() ? 'إغلاق المقطع' : 'Close video');
           x.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>';
-          x.style.top = 'calc(50% - ' + (h / 2).toFixed(0) + 'px)';
-          x.style[isRTL() ? 'left' : 'right'] = 'calc(50% - ' + (w / 2 + 60).toFixed(0) + 'px)';
+          // خارج إطار الشريط (الذي يقصّ ما يتجاوزه) حتى يظهر فوق المقطع كاملًا
+          x.style.top = (stage.offsetTop - m0 + 16 - 56).toFixed(0) + 'px';   // الهامش العلوي يتحرك إلى 0
+          x.style[isRTL() ? 'left' : 'right'] = 'calc(50% - ' + (w / 2).toFixed(0) + 'px)';
           x.addEventListener('click', e => { e.stopPropagation(); stopPlaying(); });
-          stage.appendChild(x);
+          el.appendChild(x);
           window.scrollTo({ top: centerY(finalTop, finalH), behavior: reduced ? 'auto' : 'smooth' });
           // تصحيح بعد انتهاء الحركة (إن تغيّر ما فوقه، مثل إغلاق مقطع آخر)
           const fix = () => {
@@ -3350,7 +3722,7 @@
           });
           stage.style.height = '';
           stage.style.marginBlock = '';
-          stage.querySelectorAll('.reel-x').forEach(b => b.remove());
+          el.querySelectorAll('.reel-x').forEach(b => b.remove());
         }
 
         api.stop = function () {
@@ -3376,17 +3748,17 @@
             const c = e.target.closest('.reel-card');
             const side = c && !c.classList.contains('is-active');
             cur.classList.toggle('is-nav', !!side);
+            cur.classList.toggle('is-play', !!c && !side && !frame);
             if (side) {
               const r = c.getBoundingClientRect(), sr = stage.getBoundingClientRect();
               cur.classList.toggle('is-right', r.left + r.width / 2 > sr.left + sr.width / 2);
             }
           });
-          stage.addEventListener('pointerleave', () => cur.classList.remove('is-nav', 'is-right'));
+          stage.addEventListener('pointerleave', () => cur.classList.remove('is-nav', 'is-right', 'is-play'));
         }
 
         el.querySelectorAll('.reel-btn').forEach(b =>
           b.addEventListener('click', () => shift(b.dataset.dir === 'next' ? 1 : -1)));
-        el.querySelector('.reel-close').addEventListener('click', stopPlaying);
 
         // السحب بالماوس أو اللمس
         let pid = null, startX = 0, moved = false, suppress = false;
@@ -3491,8 +3863,7 @@
       document.addEventListener('pointerdown', e => {
         if (!playing) return;
         const card = playing.activeCard();
-        const infoEl = playing.el.querySelector('.reel-info');
-        if (card.contains(e.target) || infoEl.contains(e.target)) return;
+        if (card.contains(e.target)) return;
         stopPlaying();
       }, true);
       document.addEventListener('keydown', e => {
@@ -3514,10 +3885,9 @@
   </script>
   <!-- ═══════════════ PARTNERS STRIP (auto-scroll + drag) ═══════════════ -->
   <script>
-    (function () {
+    document.querySelectorAll('.partners-marquee').forEach(function (wrap) {
       'use strict';
-      const wrap = document.querySelector('.partners-marquee');
-      if (!wrap) return;
+      const dir = Number(wrap.dataset.dir || 1);   // 1 = يسارًا، ‎-1‎ = يمينًا
       const track = wrap.querySelector('.partners-track');
       const set = track.querySelector('.partners-set');
       const reduced = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
@@ -3538,7 +3908,7 @@
             x += velocity * dt;
             velocity *= Math.pow(0.04, dt);
           } else if (!hover && !reduced) {
-            x -= speed() * dt;
+            x -= dir * speed() * dt;
           }
           x = wrapX(x);
           render();
@@ -3591,6 +3961,129 @@
       }, { passive: false });
 
       requestAnimationFrame(t => { last = t; tick(t); });
+    });
+  </script>
+  <!-- ═══════════════ NAV SPY · SERVICES · PROCESS JOURNEY ═══════════════ -->
+  <script>
+    (function () {
+      'use strict';
+      const reduced = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+      // ─── رابط القسم الحالي + لون الشعار حسب خلفية القسم تحته ───
+      const nav = document.getElementById('nav');
+      const logo = document.querySelector('.nav-logo');
+      const links = [...document.querySelectorAll('.nav-links a')];
+      const targets = links.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+      const blocks = [...document.querySelectorAll('section, .footer')];
+      function spy() {
+        const y = window.innerHeight * 0.4;
+        let cur = null;
+        targets.forEach(t => { const r = t.getBoundingClientRect(); if (r.top <= y && r.bottom > y) cur = t; });
+        links.forEach(a => a.classList.toggle('is-current', !!cur && a.getAttribute('href') === '#' + cur.id));
+        if (logo) {
+          const ly = logo.getBoundingClientRect().top + logo.offsetHeight / 2;
+          const under = blocks.find(b => { const r = b.getBoundingClientRect(); return r.top <= ly && r.bottom > ly; });
+          nav.classList.toggle('on-light', !!under && under.classList.contains('section-light'));
+        }
+      }
+
+      // ─── خطة العمل: مسار متعرّج يُرسم مع التمرير ───
+      const tl = document.querySelector('.tl');
+      const tlSvg = tl && tl.querySelector('.tl-svg');
+      const guide = tl && tl.querySelector('.tl-guide');
+      const draw = tl && tl.querySelector('.tl-draw');
+      const head = tl && tl.querySelector('.tl-head');
+      const steps = tl ? [...tl.querySelectorAll('.tl-step')] : [];
+      const bgs = [...document.querySelectorAll('.tl-bg')];
+      let samples = [], len = 0;
+
+      // منحنى Catmull-Rom يمر بالنقاط ← مسار SVG
+      function spline(pts) {
+        let d = 'M' + pts[0][0].toFixed(1) + ' ' + pts[0][1].toFixed(1);
+        for (let i = 0; i < pts.length - 1; i++) {
+          const p0 = pts[i - 1] || pts[i], p1 = pts[i], p2 = pts[i + 1], p3 = pts[i + 2] || p2;
+          const c1 = [p1[0] + (p2[0] - p0[0]) / 6, p1[1] + (p2[1] - p0[1]) / 6];
+          const c2 = [p2[0] - (p3[0] - p1[0]) / 6, p2[1] - (p3[1] - p1[1]) / 6];
+          d += ' C' + c1.map(v => v.toFixed(1)).join(' ') + ' ' + c2.map(v => v.toFixed(1)).join(' ') + ' ' + p2.map(v => v.toFixed(1)).join(' ');
+        }
+        return d;
+      }
+
+      function buildPath() {
+        if (!tl) return;
+        const tr = tl.getBoundingClientRect();
+        const W = tr.width, H = tr.height;
+        tlSvg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+        const nodes = steps.map(s => { const b = s.querySelector('.tl-node').getBoundingClientRect(); return [b.left - tr.left + b.width / 2, b.top - tr.top + b.height / 2]; });
+        const wide = W > 700;
+        // منحنى S ناعم بين كل محطتين، مع حلقة واحدة فقط بين الثانية والثالثة
+        const pts = [nodes[0]];
+        nodes.forEach((n, i) => {
+          const nx = nodes[i + 1];
+          if (!nx) return;
+          const loop = wide && i === 1, side = (i % 2 ? -1 : 1);
+          const r = 34, la = 0.4, lb = 0.6;
+          for (let k = 1; k <= 60; k++) {
+            const t = k / 60;
+            // أثناء الحلقة يتوقف التقدّم الأفقي حتى تكتمل دائرتها
+            const w = !loop ? t : (t < la ? t : t > lb ? t - (lb - la) : la) / (1 - (lb - la));
+            // يبدأ وينتهي عموديًا عند كل محطة بانسياب (بلا زوايا)
+            const sm = w * w * w * (w * (w * 6 - 15) + 10);
+            let x = n[0] + (nx[0] - n[0]) * sm, y = n[1] + (nx[1] - n[1]) * t;
+            if (!wide) x += side * Math.sin(Math.PI * t) * Math.min(22, W * 0.06);
+            if (loop && t > la && t < lb) {
+              const u = (t - la) / (lb - la);
+              x += (nx[0] > n[0] ? 1 : -1) * r * Math.sin(2 * Math.PI * u);
+              y -= r * (1 - Math.cos(2 * Math.PI * u));
+            }
+            pts.push([x, y]);
+          }
+        });
+        const d = spline(pts);
+        guide.setAttribute('d', d);
+        draw.setAttribute('d', d);
+        len = draw.getTotalLength();
+        draw.style.strokeDasharray = len + ' ' + len;
+        // جدول: لكل طول على المسار، أعمق نقطة وصلها حتى الآن
+        samples = [];
+        let maxY = -Infinity;
+        for (let l = 0; l <= len; l += 4) { const p = draw.getPointAtLength(l); maxY = Math.max(maxY, p.y); samples.push([l, maxY]); }
+        journey();
+      }
+
+      function journey() {
+        if (!tl || !samples.length) return;
+        const tr = tl.getBoundingClientRect();
+        const mark = window.innerHeight * 0.62 - tr.top;
+        let L = 0;
+        for (let i = 0; i < samples.length; i++) { if (samples[i][1] > mark) break; L = samples[i][0]; }
+        draw.style.strokeDashoffset = (len - L).toFixed(1);
+        const p = draw.getPointAtLength(L);
+        head.setAttribute('cx', p.x.toFixed(1)); head.setAttribute('cy', p.y.toFixed(1));
+        head.style.opacity = L > 2 && L < len - 2 ? 1 : 0;
+        let last = -1;
+        steps.forEach((st, i) => {
+          const b = st.querySelector('.tl-node').getBoundingClientRect();
+          const reached = b.top + b.height / 2 - tr.top <= mark;
+          st.classList.toggle('is-reached', reached);
+          // صورة المحطة الأخيرة تظهر أبكر قليلًا، لكن بعد الوصول إلى المحطة التي قبلها
+          if (reached || (i === steps.length - 1 && last === i - 1 && b.top + b.height / 2 <= window.innerHeight * 0.76)) last = i;
+        });
+        // خلفية المحطة الأخيرة التي وصلها الخط (وتختفي بعد مغادرة القسم)
+        const sr = tl.closest('section').getBoundingClientRect();
+        const inView = sr.top < window.innerHeight && sr.bottom > 0;
+        bgs.forEach((im, i) => im.classList.toggle('is-on', inView && i === last));
+      }
+      // قبل الوصول: الصورة مخفية بأول إطار (فارغ) من القناع
+
+      let ticking = false;
+      const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(() => { ticking = false; journey(); spy(); }); } };
+      window.addEventListener('scroll', onScroll, { passive: true });
+      let rt; window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { buildPath(); onScroll(); }, 120); });
+      new MutationObserver(() => requestAnimationFrame(buildPath)).observe(document.body, { attributes: true, attributeFilter: ['class'] });
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(buildPath);
+      window.addEventListener('load', buildPath);
+      buildPath(); spy();
     })();
   </script>
 </body>
