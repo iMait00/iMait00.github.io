@@ -2125,6 +2125,22 @@
       height: 44px
     }
 
+    /* نقاط الياء في تجارب تنزل نصف حرف تحت السطر، ونص الحقول (والنص الإرشادي فيها) يُقصّ عند حدّ الخط السفلي.
+       نسخة من الخط نفسه بحدّ سفلي أعمق للحقول فقط، وحشوة أقل بنفس الفرق فيبقى ارتفاع الحقل كما هو */
+    @font-face {
+      font-family: 'Tajarib Field';
+      src: url('fonts/tajarib-field.woff2') format('woff2');
+      font-weight: 400;
+      font-display: swap
+    }
+
+    #contactForm input:not([type=hidden]):not([type=checkbox]),
+    #contactForm textarea {
+      font-family: 'Tajarib Field', var(--font-body) !important;
+      line-height: 1.8;
+      padding-block: calc(.9rem - .275em) !important
+    }
+
     .contact-detail-note {
       font-size: var(--text-sm);
       color: var(--flame)
@@ -2332,25 +2348,6 @@
       min-height: 44px;
       align-items: center;
       justify-content: center
-    }
-
-    /* رابط التخطي (يظهر عند التنقل بلوحة المفاتيح فقط) */
-    .skip-link {
-      position: fixed;
-      top: var(--s2);
-      inset-inline-start: var(--s2);
-      z-index: 100000;
-      padding: var(--s1) var(--s2);
-      background: var(--flame);
-      color: var(--espresso);
-      font-family: var(--font-heading);
-      font-weight: 700;
-      transform: translateY(-200%);
-      transition: transform .2s
-    }
-
-    .skip-link:focus-visible {
-      transform: none
     }
 
     @media(max-width:768px) {
@@ -3119,7 +3116,6 @@
 </head>
 
 <body>
-  <a class="skip-link" href="#main"><span data-ar>تخطَّ إلى المحتوى</span><span data-en>Skip to content</span></a>
 
   <!-- Custom Cursor -->
   <div class="custom-cursor" id="customCursor"><svg class="cursor-arrow" viewBox="0 0 24 24" fill="none"
@@ -3535,8 +3531,9 @@
               <span class="contact-detail-icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"
                   stroke-linejoin="miter">
-                  <path d="M4 4h16v16H4z" />
-                  <polyline points="22,6 12,13 2,6" />
+                  <rect x="2.75" y="5.25" width="18.5" height="13.5" />
+                  <path d="M3.5 6 12 12.75 20.5 6" />
+                  <path d="M3.5 18 9.6 11.6M20.5 18l-6.1-6.4" stroke-width="1.2" opacity=".55" />
                 </svg>
               </span>
               <span class="contact-detail-text">
