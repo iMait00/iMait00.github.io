@@ -26,9 +26,8 @@
   <meta name="twitter:description" content="محمد رجب — مونتير وموشن ديزاينر في الرياض.">
   <meta name="twitter:image" content="https://mohragab.com/images/og-cover.jpg">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Alyamama:wght@300..900&display=swap" rel="stylesheet">
+  <link rel="preload" href="fonts/milan-display-black.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/tajarib-regular.woff2" as="font" type="font/woff2" crossorigin>
   <style>
     *,
     *::before,
@@ -53,8 +52,10 @@
       --border-dark: rgba(173, 128, 88, .12);
       --border-light: rgba(92, 58, 34, .15);
       --tan: #D4B48C;
-      --font-heading: 'Alyamama', sans-serif;
-      --font-body: 'Alyamama', sans-serif;
+      /* Milan Display للعناوين، وتجارب لكل ما سواها */
+      --font-display: 'Milan Display', 'Tajarib', sans-serif;
+      --font-heading: 'Tajarib', sans-serif;
+      --font-body: 'Tajarib', sans-serif;
       --font-mono: 'JetBrains Mono', monospace;
       --ease-out: cubic-bezier(.16, 1, .3, 1);
       --max-w: 1240px;
@@ -2239,11 +2240,15 @@
     }
 
     .hero-strip .hero-stat-num {
-      text-box: trim-both cap alphabetic
+      text-box: none;
+      line-height: 1;
+      position: relative;
+      top: var(--num-dy, 0)
     }
 
     .hero-strip .hero-stat-label {
-      text-box: trim-both ex alphabetic
+      text-box: none;
+      line-height: 1.4
     }
 
     /* ══════════════════════════════════════
@@ -2276,9 +2281,10 @@
     }
 
     /* خط اليمامة يحجز ‎≈0.28em‎ تحت الحروف و‎≈0.27em‎ فوقها: نخصمها لتصبح المسافة الظاهرة هي قيمة المقياس */
+    /* Milan Display يكاد يملأ سطره من الأسفل، فلا خصم تحته */
     .section-title,
     .services-head .section-title {
-      margin-bottom: calc(var(--s3) - .28em)
+      margin-bottom: var(--s3)
     }
 
     .section-title+.section-desc,
@@ -2297,7 +2303,7 @@
     }
 
     .reel-info-top {
-      margin-bottom: calc(var(--s2) - .28em * 1.18)
+      margin-bottom: calc(var(--s2) - .1em)
     }
 
     .reel-desc {
@@ -2540,7 +2546,8 @@
       width: .95em;
       height: .95em;
       margin-inline-end: .35em;
-      vertical-align: -.12em;
+      /* مركز الرمز على مركز حبر العنوان بخط Milan */
+      vertical-align: -.235em;
       background: var(--flame);
       -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 960 1050'%3E%3Cpolygon points='429,0 641,176 612,463 400,287'/%3E%3Cpolygon points='908,218 862,490 599,609 645,337'/%3E%3Cpolygon points='959,743 701,838 467,670 725,574'/%3E%3Cpolygon points='530,1048 318,872 347,585 559,761'/%3E%3Cpolygon points='51,830 97,559 360,440 314,712'/%3E%3Cpolygon points='0,306 259,211 493,380 235,475'/%3E%3C/svg%3E") center / contain no-repeat;
       mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 960 1050'%3E%3Cpolygon points='429,0 641,176 612,463 400,287'/%3E%3Cpolygon points='908,218 862,490 599,609 645,337'/%3E%3Cpolygon points='959,743 701,838 467,670 725,574'/%3E%3Cpolygon points='530,1048 318,872 347,585 559,761'/%3E%3Cpolygon points='51,830 97,559 360,440 314,712'/%3E%3Cpolygon points='0,306 259,211 493,380 235,475'/%3E%3C/svg%3E") center / contain no-repeat
@@ -2663,7 +2670,7 @@
     .tl-step {
       width: min(100%, 26rem);
       display: grid;
-      grid-template-columns: 26px minmax(0, 1fr);
+      grid-template-columns: 30px minmax(0, 1fr);
       column-gap: var(--s3);
       align-items: center
     }
@@ -2673,18 +2680,28 @@
     }
 
     .tl-node {
-      width: 24px;
-      height: 24px;
-      border-radius: 0;
-      background: var(--espresso);
-      border: 2px solid rgba(241, 230, 210, .5);
-      transition: background-color .4s, border-color .4s, box-shadow .5s
+      width: 30px;
+      height: 30px;
+      display: block
     }
 
-    .tl-step.is-reached .tl-node {
-      background: var(--flame);
-      border-color: var(--flame);
-      box-shadow: 0 0 0 10px rgba(255, 90, 31, .16)
+    .tl-node svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+      fill: var(--espresso);
+      stroke: rgba(241, 230, 210, .55);
+      stroke-width: 70;
+      stroke-linejoin: miter;
+      transition: fill .4s, stroke .4s, filter .5s, transform .8s var(--ease-out)
+    }
+
+    .tl-step.is-reached .tl-node svg {
+      fill: var(--flame);
+      stroke: var(--flame);
+      filter: drop-shadow(0 0 10px rgba(255, 90, 31, .55));
+      transform: rotate(30deg)
     }
 
     .tl-text {
@@ -2727,7 +2744,8 @@
       font-size: var(--text-2xl);
       font-weight: 700;
       color: var(--cream);
-      margin-bottom: calc(var(--s2) - .28em)
+      line-height: 1.2;
+      margin-bottom: var(--tl-h3-mb, var(--s2))
     }
 
     #process .tl-text p {
@@ -2746,7 +2764,7 @@
       .tl-step:nth-child(even) {
         width: 100%;
         margin: 0;
-        grid-template-columns: 26px minmax(0, 1fr);
+        grid-template-columns: 30px minmax(0, 1fr);
         row-gap: var(--s3);
         align-items: start
       }
@@ -2808,6 +2826,295 @@
     .custom-cursor.is-play {
       border-radius: 0
     }
+    /* ══════════════════════════════════════
+   HERO — Milan Display للاسم وTajarib للمتن، بنسب التصميم المرجعي
+   (وحدة --u = بكسل واحد من التصميم بعرض 1646)
+   ══════════════════════════════════════ */
+    @font-face {
+      font-family: 'Milan Display';
+      src: url('fonts/milan-display-black.woff2') format('woff2');
+      font-weight: 900;
+      font-display: swap
+    }
+
+    @font-face {
+      font-family: 'Tajarib';
+      src: url('fonts/tajarib-regular.woff2') format('woff2');
+      font-weight: 400;
+      font-display: swap
+    }
+
+    @font-face {
+      font-family: 'Tajarib';
+      src: url('fonts/tajarib-medium.woff2') format('woff2');
+      font-weight: 500;
+      font-display: swap
+    }
+
+    @font-face {
+      font-family: 'Tajarib';
+      src: url('fonts/tajarib-bold.woff2') format('woff2');
+      font-weight: 600 900;
+      font-display: swap
+    }
+
+    /* العناوين بخط Milan Display */
+    .section-title,
+    .partners-title,
+    .hero-stat-num,
+    .track h3,
+    .reel-head h3,
+    .reel-title,
+    .cap h3,
+    .step h3,
+    #process .tl-text h3 {
+      font-family: var(--font-display)
+    }
+
+    /* حدود Milan بعيدة جدًا عن الحروف: نقصّ العنوان من رأس الألف إلى خط القاعدة
+       فتُقاس المسافة تحته من قاعدة الحروف */
+    .section-title,
+    .partners-title,
+    .track h3,
+    .reel-title,
+    #process .tl-text h3 {
+      text-box: trim-both cap alphabetic
+    }
+
+    #hero {
+      --u0: calc(100vw / 1646);
+      /* العناصر أصغر بـ20% من التصميم، والهوامش كما هي */
+      --u: calc(var(--u0) * .8);
+      --mx: calc(var(--u0) * 94)
+    }
+
+    #hero .hero-bg-img {
+      opacity: 1
+    }
+
+    #hero .hero-text-side {
+      justify-self: stretch;
+      align-items: flex-start;
+      padding-inline: var(--mx);
+      /* الكتلة أعلى قليلًا من المنتصف كما في التصميم */
+      padding-bottom: calc(var(--s6) + var(--u0) * 84);
+      min-width: 0
+    }
+
+    #hero .hero-name {
+      font-family: 'Milan Display', var(--font-heading);
+      font-weight: 900;
+      color: var(--flame);
+      font-size: calc(var(--u) * 262 * var(--fit-n, 1));
+      line-height: 1;
+      letter-spacing: 0;
+      white-space: nowrap;
+      text-box: none;
+      margin: 0;
+      opacity: 1
+    }
+
+    #hero .hero-name>[data-ar],
+    body.lang-en #hero .hero-name>[data-en] {
+      display: inline-grid
+    }
+
+    #hero .hero-name>[data-en],
+    body.lang-en #hero .hero-name>[data-ar] {
+      display: none
+    }
+
+    #hero .hn-1,
+    #hero .hn-2 {
+      grid-area: 1 / 1;
+      justify-self: start;
+      display: block
+    }
+
+    /* «رجب» فوق «محمد» */
+    #hero .hn-2 {
+      position: relative;
+      z-index: 1
+    }
+
+    /* خاصية Swash في تجارب: باء «رجب» الممدودة */
+    #hero [data-ar] .hn-2 {
+      font-feature-settings: "swsh" 1
+    }
+
+    #hero .hn-2 {
+      font-family: 'Tajarib', var(--font-body);
+      font-weight: 400;
+      color: var(--cream);
+      font-size: .523em;
+      margin-top: .852em;
+      margin-inline-start: -.045em
+    }
+
+    /* الاسم اللاتيني أعرض بكثير: حجم يحفظ نفس التكوين */
+    body.lang-en #hero .hero-name {
+      font-size: calc(var(--u) * 170 * var(--fit-n, 1))
+    }
+
+    body.lang-en #hero .hn-2 {
+      font-size: .6em;
+      margin-top: .86em;
+      margin-inline-start: .02em
+    }
+
+    #hero .hero-sub {
+      font-family: 'Tajarib', var(--font-body);
+      font-weight: 400;
+      color: rgba(241, 230, 210, .92);
+      font-size: calc(var(--u) * 39 * var(--fit-b, 1));
+      line-height: 1.41;
+      max-width: none;
+      text-box: none;
+      text-wrap: nowrap;
+      margin: calc(var(--u) * 68.7 * var(--fit-b, 1)) 0 calc(var(--u) * 39.5)
+    }
+
+    #hero .hero-sub>span {
+      display: block;
+      width: max-content;
+      white-space: nowrap
+    }
+
+    #hero .hero-actions {
+      gap: calc(var(--u) * 21);
+      width: auto
+    }
+
+    #hero .btn-flame,
+    #hero .btn-ghost {
+      font-family: 'Tajarib', var(--font-body);
+      font-weight: 400;
+      font-size: max(13px, calc(var(--u) * 22));
+      flex: none;
+      width: calc(var(--u) * 235);
+      min-width: max-content;
+      height: max(44px, calc(var(--u) * 77));
+      min-height: 0;
+      padding: 0 1em;
+      justify-content: center;
+      white-space: nowrap
+    }
+
+    #hero .btn-ghost {
+      border: 1px solid var(--flame);
+      color: var(--cream)
+    }
+
+    #hero .btn-ghost:hover {
+      color: var(--flame)
+    }
+
+    @media(max-width:900px) {
+      #hero {
+        --u0: calc(88vw / 652);
+        --u: var(--u0);
+        --mx: 6vw;
+        padding-inline: 0
+      }
+
+      #hero .hero-actions {
+        width: 100%;
+        justify-content: flex-start
+      }
+
+      #hero .btn-flame,
+      #hero .btn-ghost {
+        flex: 1 1 0;
+        width: auto;
+        min-width: 0;
+        padding: 0 .5em
+      }
+    }
+
+    /* السهم يتجه للأمام في الإنجليزية */
+    body.lang-en #hero .btn-flame svg {
+      transform: scaleX(-1)
+    }
+
+    body.lang-en #hero .btn-flame:hover svg {
+      transform: scaleX(-1) translateX(-3px)
+    }
+
+    /* ══════════════════════════════════════
+   NAV — يختفي عند النزول ويعود عند الصعود
+   ══════════════════════════════════════ */
+    .nav {
+      transition: transform .5s var(--ease-out), opacity .4s
+    }
+
+    .nav.is-hidden {
+      transform: translateY(calc(-100% - 12px));
+      opacity: 0
+    }
+
+    /* ══════════════════════════════════════
+   MOBILE MENU — أربعة مستطيلات زجاجية فوق بعضها
+   ══════════════════════════════════════ */
+    @media(max-width:768px) {
+      .mobile-menu {
+        background: rgba(10, 7, 4, .45);
+        -webkit-backdrop-filter: blur(6px);
+        backdrop-filter: blur(6px);
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: stretch;
+        gap: 6px;
+        padding: calc(var(--s2) + 46px + 6px) clamp(1rem, 2.4vw, 2rem) 0;
+        transition: opacity .35s
+      }
+
+      .mobile-menu a.mobile-link {
+        height: 72px;
+        flex: none;
+        display: grid;
+        place-items: center;
+        background: rgba(26, 18, 11, .72);
+        -webkit-backdrop-filter: blur(14px);
+        backdrop-filter: blur(14px);
+        border: 1px solid rgba(241, 230, 210, .12);
+        color: rgba(241, 230, 210, .85);
+        font-family: var(--font-heading);
+        font-size: 1.25rem;
+        font-weight: 700;
+        opacity: 0;
+        transform: translateY(-10px);
+        transition: opacity .35s, transform .45s var(--ease-out), background-color .3s, color .3s, border-color .3s
+      }
+
+      .mobile-menu.active a.mobile-link {
+        opacity: 1;
+        transform: none
+      }
+
+      .mobile-menu.active a.mobile-link:nth-child(2) {
+        transition-delay: .04s
+      }
+
+      .mobile-menu.active a.mobile-link:nth-child(3) {
+        transition-delay: .08s
+      }
+
+      .mobile-menu.active a.mobile-link:nth-child(4) {
+        transition-delay: .12s
+      }
+
+      .mobile-menu a.mobile-link:hover {
+        border-color: var(--flame);
+        color: var(--cream)
+      }
+
+      .mobile-menu a.mobile-link.is-current {
+        background: var(--flame);
+        border-color: var(--flame);
+        color: var(--espresso)
+      }
+    }
   </style>
 </head>
 
@@ -2865,26 +3172,23 @@
     <a href="#hero" class="mobile-link"><span data-ar>عني</span><span data-en>About me</span></a>
     <a href="#work" class="mobile-link"><span data-ar>الأعمال</span><span data-en>Works</span></a>
     <a href="#process" class="mobile-link"><span data-ar>الخطة</span><span data-en>Plan</span></a>
-    <a href="#contact" class="mobile-link" style="color:var(--flame)"><span data-ar>تواصل معي</span><span
-        data-en>Contact me</span></a>
+    <a href="#contact" class="mobile-link"><span data-ar>تواصل</span><span data-en>Contact</span></a>
   </div>
 
   <!-- ═══════════════ HERO ═══════════════ -->
   <main id="main">
   <section class="hero" id="hero">
     <div class="hero-text-side">
-      <h1><span data-ar>محمد رجب</span><span data-en>Mohammed Rajab</span></h1>
-      <p class="hero-sub" data-ar>مونتير وموشن ديزاينر بخلفية في التصميم، أنسج مقاطعي بقصص وطرق تبسّط الأفكار.</p>
-      <p class="hero-sub" data-en>Video editor and motion designer with a background in design, weaving my videos with
-        stories and approaches that make ideas simple.</p>
+      <h1 class="hero-name"><span data-ar aria-label="محمد رجب"><span class="hn-1" aria-hidden="true">محمد</span><span class="hn-2" aria-hidden="true">رجـب</span></span><span data-en aria-label="Mohammed Rajab"><span class="hn-1" aria-hidden="true">Mohammed</span><span class="hn-2" aria-hidden="true">Rajab</span></span></h1>
+      <p class="hero-sub" data-ar><span>مونتير وموشن ديزاينر بخلفية في التصميم،</span> <span>أنسج مقاطعي بقصص وطرق تبسّط الأفكار.</span></p>
+      <p class="hero-sub" data-en><span>Editor and motion designer with a design eye,</span> <span>weaving stories that make ideas simple.</span></p>
 
       <div class="hero-actions">
         <a href="#work" class="btn-flame"><span data-ar>شوف شغلي</span><span data-en>See my work</span><svg
             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M19 12H5M12 19l-7-7 7-7" />
           </svg></a>
-        <a href="#contact" class="btn-ghost"><span data-ar>شاركني فكرتك!</span><span data-en>Share your idea with
-            me!</span></a>
+        <a href="#contact" class="btn-ghost"><span data-ar>شاركني فكرتك!</span><span data-en>Create with me!</span></a>
       </div>
     </div>
     <div class="hero-bg-side">
@@ -2900,7 +3204,7 @@
     </div>
     <div class="hero-stat">
       <div class="hero-stat-num" dir="ltr">+40</div>
-      <div class="hero-stat-label"><span data-ar>جهة تعاملت معها</span><span data-en>Organizations Served</span></div>
+      <div class="hero-stat-label"><span data-ar>جهة متعاونة</span><span data-en>Organizations Served</span></div>
     </div>
     <div class="hero-stat">
       <div class="hero-stat-num" dir="ltr">+3</div>
@@ -3176,10 +3480,10 @@
     <div class="section-inner">
       <h2 class="section-title steps-title"><span data-ar>خطة العمل</span><span data-en>The Work Plan</span></h2>
       <div class="tl">
-        <svg class="tl-svg" aria-hidden="true"><path class="tl-guide" /><path class="tl-draw" /><rect class="tl-head" width="11" height="11" /></svg>
+        <svg class="tl-svg" aria-hidden="true"><path class="tl-guide" /><path class="tl-draw" /><use class="tl-head" href="#ic-burst" width="18" height="18" /></svg>
         <ol class="tl-list">
           <li class="tl-step">
-            <span class="tl-node" aria-hidden="true"></span>
+            <span class="tl-node" aria-hidden="true"><svg viewBox="-40 -40 1080 1092"><use href="#ic-burst" /></svg></span>
             <div class="tl-text">
               <h3><span data-ar>فهم الرؤية</span><span data-en>Understanding the Vision</span></h3>
               <p data-ar>الهدف والجمهور والاتجاه.</p>
@@ -3187,7 +3491,7 @@
             </div>
           </li>
           <li class="tl-step">
-            <span class="tl-node" aria-hidden="true"></span>
+            <span class="tl-node" aria-hidden="true"><svg viewBox="-40 -40 1080 1092"><use href="#ic-burst" /></svg></span>
             <div class="tl-text">
               <h3><span data-ar>صناعة المخطط</span><span data-en>Making the Blueprint</span></h3>
               <p data-ar>تصوّر مبدئي قبل البدء.</p>
@@ -3195,7 +3499,7 @@
             </div>
           </li>
           <li class="tl-step">
-            <span class="tl-node" aria-hidden="true"></span>
+            <span class="tl-node" aria-hidden="true"><svg viewBox="-40 -40 1080 1092"><use href="#ic-burst" /></svg></span>
             <div class="tl-text">
               <h3><span data-ar>الطبخ</span><span data-en>Cooking</span></h3>
               <p data-ar>تنفيذ الخطة خطوة بخطوة.</p>
@@ -3203,7 +3507,7 @@
             </div>
           </li>
           <li class="tl-step">
-            <span class="tl-node" aria-hidden="true"></span>
+            <span class="tl-node" aria-hidden="true"><svg viewBox="-40 -40 1080 1092"><use href="#ic-burst" /></svg></span>
             <div class="tl-text">
               <h3><span data-ar>المراجعة والتسليم</span><span data-en>Review and Delivery</span></h3>
               <p data-ar>صقل التفاصيل ثم التسليم.</p>
@@ -3365,15 +3669,15 @@
       }
 
       const formTexts = {
-        ar: { name: 'الاسم الكامل', email: 'بريدك الإلكتروني', msg: 'حدثني عن مشروعك...', svc: 'اختر الخدمة', opts: { editing: 'مونتاج فيديو', motion: 'موشن', coverage: 'تغطية فعاليات', color: 'تدريج ألوان', promo: 'فيديو ترويجي', social: 'محتوى سوشال ميديا', other: 'أخرى' } },
-        en: { name: 'Full Name', email: 'Your Email', msg: 'Tell me about your project...', svc: 'Select the Service', opts: { editing: 'Video Editing', motion: 'Motion', coverage: 'Event Coverage', color: 'Color Grading', promo: 'Promotional Video', social: 'Social Media Content', other: 'Other' } }
+        ar: { name: 'الاسم الكامل', email: 'بريدك الإلكتروني', msg: 'كلمني عن فكرتك...', svc: 'اختر الخدمة', opts: { editing: 'مونتاج فيديو', motion: 'موشن', coverage: 'تغطية فعاليات', color: 'تدريج ألوان', promo: 'فيديو ترويجي', social: 'محتوى سوشال ميديا', other: 'أخرى' } },
+        en: { name: 'Full name', email: 'Your email', msg: 'Tell me about your idea...', svc: 'Select the Service', opts: { editing: 'Video Editing', motion: 'Motion', coverage: 'Event Coverage', color: 'Color Grading', promo: 'Promotional Video', social: 'Social Media Content', other: 'Other' } }
       };
       function swapFormLang(lang) {
         const t = formTexts[lang];
-        const inputs = document.querySelectorAll('#contactForm input,#contactForm textarea');
-        if (inputs[0]) inputs[0].placeholder = t.name;
-        if (inputs[1]) inputs[1].placeholder = t.email;
-        if (inputs[2]) inputs[2].placeholder = t.msg;
+        const set = (id, v) => { const el = document.getElementById(id); if (el) el.placeholder = v };
+        set('f-name', t.name);
+        set('f-email', t.email);
+        set('f-message', t.msg);
         const sel = document.querySelector('#contactForm select');
         if (sel) { sel.options[0].text = t.svc; Array.from(sel.options).slice(1).forEach(o => { if (t.opts[o.value]) o.text = t.opts[o.value] }) }
       }
@@ -3932,7 +4236,7 @@
       const set = track.querySelector('.partners-set');
       const reduced = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
       const speed = () => Math.max(45, window.innerWidth * 0.045);   // بكسل في الثانية (≈65 على شاشة 1440)
-      let x = 0, last = performance.now(), hover = false, dragging = false;
+      let x = 0, last = performance.now(), dragging = false;
       let pid = null, startX = 0, startPos = 0, moved = false, velocity = 0, lastMoveX = 0, lastMoveT = 0;
 
       const width = () => set.offsetWidth;
@@ -3944,38 +4248,33 @@
         const dt = Math.min(0.1, (now - last) / 1000);
         last = now;
         if (!dragging) {
-          if (Math.abs(velocity) > 5) {          // انزلاق بعد الإفلات
-            x += velocity * dt;
-            velocity *= Math.pow(0.04, dt);
-          } else if (!hover && !reduced) {
-            x -= dir * speed() * dt;
-          }
-          x = wrapX(x);
+          // السرعة تقترب بنعومة من سرعة الشريط الأصلية (بعد السحب أو الدفع) دون توقف
+          const target = reduced ? 0 : -dir * speed();
+          velocity += (target - velocity) * (1 - Math.pow(0.08, dt));
+          x = wrapX(x + velocity * dt);
           render();
         }
         requestAnimationFrame(tick);
       }
 
-      wrap.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse') hover = true; });
-      wrap.addEventListener('pointerleave', () => { hover = false; });
 
       wrap.addEventListener('pointerdown', e => {
         if (e.pointerType === 'mouse' && e.button !== 0) return;
         pid = e.pointerId; startX = e.clientX; startPos = x; moved = false;
-        lastMoveX = e.clientX; lastMoveT = performance.now(); velocity = 0;
+        lastMoveX = e.clientX; lastMoveT = performance.now();
       });
       wrap.addEventListener('pointermove', e => {
         if (e.pointerId !== pid) return;
         const dx = e.clientX - startX;
         if (!moved && Math.abs(dx) > 5) {
-          moved = true; dragging = true;
+          moved = true; dragging = true; velocity = 0;
           wrap.classList.add('is-grabbing');
           try { wrap.setPointerCapture(pid); } catch (_) { }
         }
         if (moved) {
           const now = performance.now();
-          const dt = Math.max(1, now - lastMoveT) / 1000;
-          velocity = (e.clientX - lastMoveX) / dt;
+          const dt = Math.max(8, now - lastMoveT) / 1000;
+          velocity = velocity * 0.6 + ((e.clientX - lastMoveX) / dt) * 0.4;
           lastMoveX = e.clientX; lastMoveT = now;
           x = wrapX(startPos + dx);
           render();
@@ -3987,6 +4286,8 @@
         if (!moved) return;
         dragging = false;
         wrap.classList.remove('is-grabbing');
+        // إن توقّف الإصبع قبل الإفلات فلا دفعة
+        if (performance.now() - lastMoveT > 90) velocity = -dir * speed() * 0.3;
         velocity = Math.max(-2500, Math.min(2500, velocity));
       }
       wrap.addEventListener('pointerup', end);
@@ -4085,10 +4386,19 @@
         draw.setAttribute('d', d);
         len = draw.getTotalLength();
         draw.style.strokeDasharray = len + ' ' + len;
-        // جدول: لكل طول على المسار، أعمق نقطة وصلها حتى الآن
+        // موضع كل محطة على طول المسار؛ بين محطتين يتقدّم الخط بطوله الفعلي (فيقطع الحلقة كاملة)
         samples = [];
-        let maxY = -Infinity;
-        for (let l = 0; l <= len; l += 4) { const p = draw.getPointAtLength(l); maxY = Math.max(maxY, p.y); samples.push([l, maxY]); }
+        let from = 0;
+        nodes.forEach(n => {
+          let best = from, bd = Infinity;
+          for (let l = from; l <= len; l += 2) {
+            const p = draw.getPointAtLength(l), d = Math.hypot(p.x - n[0], p.y - n[1]);
+            if (d < bd) { bd = d; best = l; }
+            else if (bd < 2 && d > 40) break;
+          }
+          samples.push([best, n[1]]);
+          from = best;
+        });
         journey();
       }
 
@@ -4097,10 +4407,16 @@
         const tr = tl.getBoundingClientRect();
         const mark = window.innerHeight * 0.62 - tr.top;
         let L = 0;
-        for (let i = 0; i < samples.length; i++) { if (samples[i][1] > mark) break; L = samples[i][0]; }
+        if (mark >= samples[samples.length - 1][1]) L = len;
+        else for (let i = 0; i < samples.length - 1; i++) {
+          const a = samples[i], b = samples[i + 1];
+          if (mark < a[1]) break;
+          if (mark < b[1]) { L = a[0] + (b[0] - a[0]) * (mark - a[1]) / (b[1] - a[1]); break; }
+        }
         draw.style.strokeDashoffset = (len - L).toFixed(1);
         const p = draw.getPointAtLength(L);
-        head.setAttribute('x', (p.x - 5.5).toFixed(1)); head.setAttribute('y', (p.y - 5.5).toFixed(1));
+        head.setAttribute('x', (p.x - 9).toFixed(1)); head.setAttribute('y', (p.y - 9).toFixed(1));
+        head.setAttribute('transform', 'rotate(' + (L * 0.6).toFixed(1) + ' ' + p.x.toFixed(1) + ' ' + p.y.toFixed(1) + ')');
         head.style.opacity = L > 2 && L < len - 2 ? 1 : 0;
         let last = -1;
         steps.forEach((st, i) => {
@@ -4117,14 +4433,58 @@
       }
       // قبل الوصول: الصورة مخفية بأول إطار (فارغ) من القناع
 
+      // الشريط العلوي يختفي عند النزول ويظهر عند الصعود
+      let lastY = window.scrollY;
+      function navHide() {
+        const y = window.scrollY, dy = y - lastY;
+        if (Math.abs(dy) < 6) return;
+        const menuOpen = document.getElementById('mobileMenu')?.classList.contains('active');
+        nav.classList.toggle('is-hidden', dy > 0 && y > 140 && !menuOpen);
+        lastY = y;
+      }
+
+      // روابط القائمة: القسم الحالي
+      const mlinks = [...document.querySelectorAll('.mobile-link')];
+      function mspy() {
+        const cur = links.find(a => a.classList.contains('is-current'));
+        mlinks.forEach(a => a.classList.toggle('is-current', !!cur && a.getAttribute('href') === cur.getAttribute('href')));
+      }
+
       let ticking = false;
-      const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(() => { ticking = false; journey(); spy(); }); } };
+      const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(() => { ticking = false; journey(); spy(); navHide(); mspy(); }); } };
       window.addEventListener('scroll', onScroll, { passive: true });
       let rt; window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { buildPath(); onScroll(); }, 120); });
       new MutationObserver(() => requestAnimationFrame(buildPath)).observe(document.body, { attributes: true, attributeFilter: ['class'] });
       if (document.fonts && document.fonts.ready) document.fonts.ready.then(buildPath);
       window.addEventListener('load', buildPath);
-      buildPath(); spy();
+      buildPath(); spy(); mspy();
+    })();
+  </script>
+  <!-- ═══════════════ HERO FIT ═══════════════ -->
+  <script>
+    (function () {
+      const side = document.querySelector('#hero .hero-text-side');
+      if (!side) return;
+      function fit() {
+        const cs = getComputedStyle(side);
+        const avail = side.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+        [['.hero-name', '--fit-n'], ['.hero-sub', '--fit-b']].forEach(([sel, v]) => {
+          side.style.setProperty(v, 1);
+          let w = 0;
+          side.querySelectorAll(sel).forEach(el => {
+            if (!el.offsetParent) return;
+            el.querySelectorAll(':scope > span, :scope > [data-ar] > span, :scope > [data-en] > span').forEach(sp => {
+              if (sp.offsetParent) w = Math.max(w, sp.getBoundingClientRect().width);
+            });
+          });
+          if (w > avail) side.style.setProperty(v, (avail / w * 0.99).toFixed(4));
+        });
+      }
+      window.addEventListener('resize', fit);
+      // عند تبديل اللغة (يتغير صنف body)
+      new MutationObserver(() => { fit(); requestAnimationFrame(fit) }).observe(document.body, { attributes: true, attributeFilter: ['class'] });
+      if (document.fonts) document.fonts.ready.then(fit);
+      fit();
     })();
   </script>
 </body>
